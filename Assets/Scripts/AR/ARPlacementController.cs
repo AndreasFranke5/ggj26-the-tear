@@ -17,6 +17,7 @@ namespace TheTear.AR
         public bool allowEstimatedPlane = true;
         public bool allowFallbackPlacement = true;
         public float fallbackDistance = 1.4f;
+        public Transform reticle;
 
         public bool IsPlacementActive => placementActive;
 
@@ -45,6 +46,8 @@ namespace TheTear.AR
             {
                 return;
             }
+
+            UpdateReticle();
 
             if (!TryGetTap(out Vector2 screenPos))
             {
@@ -81,6 +84,10 @@ namespace TheTear.AR
         public void BeginPlacement()
         {
             placementActive = true;
+            if (reticle != null)
+            {
+                reticle.gameObject.SetActive(false);
+            }
         }
 
         private void PlaceAtPose(Pose pose)
@@ -97,6 +104,10 @@ namespace TheTear.AR
 
             sceneRoot.transform.SetPositionAndRotation(pose.position, pose.rotation);
             placementActive = false;
+            if (reticle != null)
+            {
+                reticle.gameObject.SetActive(false);
+            }
 
             if (!hasPlaced)
             {
@@ -153,6 +164,41 @@ namespace TheTear.AR
         {
             bool trackingOk = args.state == ARSessionState.SessionTracking;
             OnTrackingStateChanged?.Invoke(trackingOk);
+        }
+
+        private void UpdateReticle()
+        {
+            if (reticle == null || arCamera == null)
+            {
+                return;
+            }
+
+            Vector2 screenCenter = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+            TrackableType trackableTypes = TrackableType.PlaneWithinPolygon;
+            if (allowEstimatedPlane)
+            {
+                trackableTypes |= TrackableType.PlaneEstimated;
+            }
+
+            if (raycastManager.Raycast(screenCenter, Hits, trackableTypes))
+            {
+                Pose pose = Hits[0].pose;
+                Vector3 forward = Vector3.ProjectOnPlane(arCamera.transform.forward, pose.up).normalized;
+                if (forward.sqrMagnitude < 0.001f)
+                {
+                    forward = Vector3.forward;
+                }
+                Quaternion rotation = Quaternion.LookRotation(forward, pose.up);
+                reticle.SetPositionAndRotation(pose.position, rotation);
+                if (!reticle.gameObject.activeSelf)
+                {
+                    reticle.gameObject.SetActive(true);
+                }
+            }
+            else if (reticle.gameObject.activeSelf)
+            {
+                reticle.gameObject.SetActive(false);
+            }
         }
     }
 }

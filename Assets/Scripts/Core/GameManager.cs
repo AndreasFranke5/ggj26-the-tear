@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TheTear.AR;
 using TheTear.Characters;
+using CharacterController = TheTear.Characters.CharacterController;
 using TheTear.Interaction;
 using TheTear.Story;
 using TheTear.Telemetry;
@@ -14,7 +15,7 @@ namespace TheTear.Core
     {
         public ARPlacementController arPlacement;
         public SceneRootController sceneRoot;
-        public CharacterManager characterController;
+        public CharacterController characterController;
         public ClueManager clueManager;
         public TelemetryRecorder telemetry;
         public TapRaycaster tapRaycaster;
@@ -28,6 +29,8 @@ namespace TheTear.Core
 
         private AppState state = AppState.Placement;
         private StoryModel story;
+        private bool trackingOk = true;
+        private Coroutine trackingRoutine;
 
         private void Awake()
         {
@@ -273,11 +276,26 @@ namespace TheTear.Core
             }
         }
 
-        private void HandleTrackingChanged(bool trackingOk)
+        private void HandleTrackingChanged(bool trackingOkNow)
         {
+            trackingOk = trackingOkNow;
+            if (trackingRoutine != null)
+            {
+                StopCoroutine(trackingRoutine);
+            }
+            trackingRoutine = StartCoroutine(ApplyTrackingBannerDelayed(trackingOkNow));
+        }
+
+        private IEnumerator ApplyTrackingBannerDelayed(bool isTrackingOk)
+        {
+            yield return new WaitForSecondsRealtime(0.8f);
+            if (trackingOk != isTrackingOk)
+            {
+                yield break;
+            }
             if (hud != null)
             {
-                hud.SetTrackingBanner(!trackingOk);
+                hud.SetTrackingBanner(!isTrackingOk);
             }
         }
 

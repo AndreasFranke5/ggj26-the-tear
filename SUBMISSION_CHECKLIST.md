@@ -8,6 +8,7 @@
 - [ ] TMP Essentials imported
 - [ ] Deduction board reachable and win/lose states verified
 - [ ] Telemetry log created in Application.persistentDataPath
+- [ ] Clue visuals confirmed (procedural or upgraded meshes)
+- [ ] Placement calibration verified (first tap places bubble on a plane)
 - [ ] Build APK (non-Development) for submission
 - [ ] README updated with Run Book
-

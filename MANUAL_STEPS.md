@@ -23,3 +23,16 @@
 - File > Build Settings > Build
 - Use Development Build for testing, then non-Development for submission
 
+6) Floor calibration / placement:
+- On device, the first tap places the investigation bubble on a detected plane (this is your floor calibration).
+- If planes are hard to detect, keep the device moving slowly for a few seconds, then tap.
+- Use the Relocate button anytime to recalibrate.
+
+7) Upgrading clue visuals to real 3D objects:
+- Import meshes into `Assets/Art/` (or any folder).
+- Open `Assets/Scripts/Factory/ClueFactory.cs`.
+- Replace the primitive builders (`CreateLanyard`, `CreateDock`, etc.) with mesh-based versions:
+  - Create a GameObject, add `MeshFilter`, assign your mesh (`sharedMesh`).
+  - Add `MeshRenderer` and assign a material.
+  - Add a collider so taps still work.
+- Run Jam > Generate Scene again and test on device.

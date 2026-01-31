@@ -38,8 +38,22 @@ namespace TheTear.Editor
             GameObject arCameraGo = new GameObject("ARCamera", typeof(Camera), typeof(AudioListener), typeof(ARCameraManager), typeof(ARCameraBackground));
             arCameraGo.tag = "MainCamera";
 
+            GameObject xrOriginGo = TryCreateXROrigin(out GameObject cameraOffset);
+            if (xrOriginGo != null && cameraOffset != null)
+            {
+                arCameraGo.transform.SetParent(cameraOffset.transform, false);
+                arManagersGo.transform.SetParent(xrOriginGo.transform, false);
+                ConfigureXROriginCamera(xrOriginGo, arCameraGo, cameraOffset);
+            }
+
+            TryAddComponent(arCameraGo, "UnityEngine.XR.ARFoundation.ARPoseDriver, Unity.XR.ARFoundation");
+
             // Scene root
             GameObject sceneRootGo = new GameObject("SceneRoot", typeof(SceneRootController));
+            if (xrOriginGo != null)
+            {
+                sceneRootGo.transform.SetParent(xrOriginGo.transform, false);
+            }
             sceneRootGo.SetActive(false);
             var sceneRoot = sceneRootGo.GetComponent<SceneRootController>();
 
@@ -47,12 +61,18 @@ namespace TheTear.Editor
             GameObject gmGo = new GameObject("GameManager");
             var gameManager = gmGo.AddComponent<GameManager>();
             var placement = gmGo.AddComponent<ARPlacementController>();
-            var character = gmGo.AddComponent<TheTear.Characters.CharacterManager>();
+            var character = gmGo.AddComponent<TheTear.Characters.CharacterController>();
             var clueManager = gmGo.AddComponent<ClueManager>();
             var telemetry = gmGo.AddComponent<TelemetryRecorder>();
             var debugOverlay = gmGo.AddComponent<DebugOverlay>();
 
             var tapRaycaster = arCameraGo.AddComponent<TapRaycaster>();
+
+            GameObject reticleGo = CreatePlacementReticle();
+            if (reticleGo != null && xrOriginGo != null)
+            {
+                reticleGo.transform.SetParent(xrOriginGo.transform, false);
+            }
 
             // UI
             GameObject canvasGo = new GameObject("Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
@@ -218,6 +238,7 @@ namespace TheTear.Editor
             placement.raycastManager = arManagersGo.GetComponent<ARRaycastManager>();
             placement.arCamera = arCameraGo.GetComponent<Camera>();
             placement.sceneRoot = sceneRoot;
+            placement.reticle = reticleGo != null ? reticleGo.transform : null;
 
             character.arCamera = arCameraGo.GetComponent<Camera>();
             character.overlayController = overlayController;
@@ -351,6 +372,116 @@ namespace TheTear.Editor
             serialized.ApplyModifiedPropertiesWithoutUndo();
             EditorUtility.SetDirty(unityObj);
             AssetDatabase.SaveAssets();
+        }
+
+        private static GameObject TryCreateXROrigin(out GameObject cameraOffset)
+        {
+            cameraOffset = null;
+            Type xrOriginType = Type.GetType("Unity.XR.CoreUtils.XROrigin, Unity.XR.CoreUtils");
+            if (xrOriginType == null)
+            {
+                return null;
+            }
+
+            GameObject xrOriginGo = new GameObject("XROrigin");
+            Component xrOrigin = xrOriginGo.AddComponent(xrOriginType);
+
+            cameraOffset = new GameObject("CameraOffset");
+            cameraOffset.transform.SetParent(xrOriginGo.transform, false);
+
+            SetProperty(xrOrigin, "CameraFloorOffsetObject", cameraOffset);
+            SetProperty(xrOrigin, "CameraYOffsetObject", cameraOffset);
+
+            return xrOriginGo;
+        }
+
+        private static void ConfigureXROriginCamera(GameObject xrOriginGo, GameObject cameraGo, GameObject cameraOffset)
+        {
+            if (xrOriginGo == null || cameraGo == null)
+            {
+                return;
+            }
+
+            Component xrOrigin = xrOriginGo.GetComponent(Type.GetType("Unity.XR.CoreUtils.XROrigin, Unity.XR.CoreUtils"));
+            if (xrOrigin != null)
+            {
+                SetProperty(xrOrigin, "Camera", cameraGo.GetComponent<Camera>());
+                if (cameraOffset != null)
+                {
+                    SetProperty(xrOrigin, "CameraFloorOffsetObject", cameraOffset);
+                    SetProperty(xrOrigin, "CameraYOffsetObject", cameraOffset);
+                }
+            }
+        }
+
+        private static void TryAddComponent(GameObject go, string typeName)
+        {
+            if (go == null || string.IsNullOrEmpty(typeName))
+            {
+                return;
+            }
+            Type type = Type.GetType(typeName);
+            if (type == null)
+            {
+                return;
+            }
+            if (go.GetComponent(type) == null)
+            {
+                go.AddComponent(type);
+            }
+        }
+
+        private static GameObject CreatePlacementReticle()
+        {
+            GameObject reticle = new GameObject("PlacementReticle");
+            var line = reticle.AddComponent<LineRenderer>();
+            line.loop = true;
+            line.positionCount = 36;
+            line.useWorldSpace = false;
+            line.widthMultiplier = 0.01f;
+
+            float radius = 0.15f;
+            for (int i = 0; i < line.positionCount; i++)
+            {
+                float angle = (float)i / (line.positionCount - 1) * Mathf.PI * 2f;
+                line.SetPosition(i, new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius));
+            }
+
+            Material mat = CreateUnlitMaterial(new Color(0.1f, 0.8f, 0.9f, 0.9f));
+            if (mat != null)
+            {
+                line.material = mat;
+            }
+
+            GameObject dot = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            dot.name = "CenterDot";
+            dot.transform.SetParent(reticle.transform, false);
+            dot.transform.localScale = new Vector3(0.04f, 0.01f, 0.04f);
+            if (mat != null)
+            {
+                var renderer = dot.GetComponent<Renderer>();
+                renderer.material = mat;
+            }
+            UnityEngine.Object.DestroyImmediate(dot.GetComponent<Collider>());
+
+            reticle.SetActive(false);
+            return reticle;
+        }
+
+        private static Material CreateUnlitMaterial(Color color)
+        {
+            Shader shader = Shader.Find("Unlit/Color");
+            if (shader == null)
+            {
+                shader = Shader.Find("Sprites/Default");
+            }
+            if (shader == null)
+            {
+                return null;
+            }
+            Material mat = new Material(shader);
+            mat.color = color;
+            return mat;
         }
 
         private static GameObject CreateUIRoot(string name, Transform parent)

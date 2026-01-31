@@ -52,9 +52,9 @@ namespace TheTear.Factory
             switch (recipe)
             {
                 case ClueRecipe.ShadowLog:
-                    return CreatePanel();
+                    return CreateShadowLog();
                 case ClueRecipe.Badge:
-                    return CreateDisk();
+                    return CreateBadge();
                 case ClueRecipe.Note:
                     return CreateNote();
                 case ClueRecipe.PowerSpire:
@@ -80,115 +80,137 @@ namespace TheTear.Factory
 
         private static GameObject CreateLanyard()
         {
-            GameObject ring = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            ring.transform.localScale = new Vector3(1f, 0.1f, 1f);
-            return ring;
+            GameObject root = new GameObject("Lanyard");
+            AddPrimitive(PrimitiveType.Cylinder, root.transform, Vector3.zero, new Vector3(0.9f, 0.05f, 0.9f), Vector3.zero, "Ring");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0f, 0f, 0.55f), new Vector3(0.2f, 0.05f, 0.6f), Vector3.zero, "Strap");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0f, 0f, 0.95f), new Vector3(0.18f, 0.06f, 0.18f), Vector3.zero, "Clasp");
+            return root;
         }
 
-        private static GameObject CreatePanel()
+        private static GameObject CreateShadowLog()
         {
-            GameObject panel = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            panel.transform.localScale = new Vector3(1f, 1f, 0.1f);
-            return panel;
+            GameObject root = new GameObject("ShadowLog");
+            AddPrimitive(PrimitiveType.Cube, root.transform, Vector3.zero, new Vector3(1.1f, 0.8f, 0.08f), Vector3.zero, "Panel");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0f, 0.2f, 0.05f), new Vector3(0.9f, 0.08f, 0.02f), Vector3.zero, "Line1");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0f, 0f, 0.05f), new Vector3(0.9f, 0.08f, 0.02f), Vector3.zero, "Line2");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0f, -0.2f, 0.05f), new Vector3(0.9f, 0.08f, 0.02f), Vector3.zero, "Line3");
+            return root;
         }
 
-        private static GameObject CreateDisk()
+        private static GameObject CreateBadge()
         {
-            GameObject disk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            disk.transform.localScale = new Vector3(1f, 0.15f, 1f);
-            return disk;
+            GameObject root = new GameObject("Badge");
+            AddPrimitive(PrimitiveType.Cylinder, root.transform, Vector3.zero, new Vector3(0.7f, 0.08f, 0.7f), Vector3.zero, "Token");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0f, 0.15f, 0f), new Vector3(0.2f, 0.25f, 0.05f), Vector3.zero, "Clip");
+            return root;
         }
 
         private static GameObject CreateNote()
         {
-            GameObject note = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            note.transform.localScale = new Vector3(1f, 0.6f, 0.05f);
-            return note;
+            GameObject root = new GameObject("Note");
+            AddPrimitive(PrimitiveType.Cube, root.transform, Vector3.zero, new Vector3(1f, 0.65f, 0.04f), Vector3.zero, "Paper");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0.35f, 0.22f, 0.03f), new Vector3(0.3f, 0.25f, 0.02f), new Vector3(0f, 0f, 25f), "Fold");
+            return root;
         }
 
         private static GameObject CreatePowerSpire()
         {
             GameObject root = new GameObject("PowerSpire");
-            GameObject spire = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            spire.transform.SetParent(root.transform, false);
-            spire.transform.localScale = new Vector3(0.6f, 1.2f, 0.6f);
-            GameObject orb = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            orb.transform.SetParent(root.transform, false);
-            orb.transform.localPosition = new Vector3(0, 1.1f, 0);
-            orb.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0, 0.1f, 0), new Vector3(0.7f, 0.2f, 0.7f), Vector3.zero, "Base");
+            AddPrimitive(PrimitiveType.Cylinder, root.transform, new Vector3(0, 0.7f, 0), new Vector3(0.5f, 0.9f, 0.5f), Vector3.zero, "Spire");
+            AddPrimitive(PrimitiveType.Sphere, root.transform, new Vector3(0, 1.6f, 0), new Vector3(0.5f, 0.5f, 0.5f), Vector3.zero, "Orb");
             return root;
         }
 
         private static GameObject CreateBit()
         {
-            GameObject bit = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            bit.transform.localScale = new Vector3(0.4f, 0.6f, 0.4f);
-            return bit;
+            GameObject root = new GameObject("Bit");
+            AddPrimitive(PrimitiveType.Cylinder, root.transform, new Vector3(0, 0.3f, 0), new Vector3(0.25f, 0.6f, 0.25f), Vector3.zero, "Handle");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0, 0.75f, 0), new Vector3(0.25f, 0.15f, 0.25f), new Vector3(0, 45f, 0), "Head");
+            AddPrimitive(PrimitiveType.Cylinder, root.transform, new Vector3(0, 0.95f, 0), new Vector3(0.12f, 0.15f, 0.12f), Vector3.zero, "Tip");
+            return root;
         }
 
         private static GameObject CreateDock()
         {
             GameObject root = new GameObject("Dock");
-            GameObject basePlate = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            basePlate.transform.SetParent(root.transform, false);
-            basePlate.transform.localScale = new Vector3(1.2f, 0.2f, 1.2f);
-            GameObject lid = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            lid.transform.SetParent(root.transform, false);
-            lid.transform.localPosition = new Vector3(0f, 0.2f, 0f);
-            lid.transform.localScale = new Vector3(1f, 0.1f, 1f);
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0, 0.05f, 0), new Vector3(1.2f, 0.15f, 1.2f), Vector3.zero, "Base");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0, 0.18f, 0), new Vector3(0.9f, 0.08f, 0.9f), Vector3.zero, "Lid");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0.45f, 0.12f, 0), new Vector3(0.1f, 0.05f, 0.5f), Vector3.zero, "Latch");
+            AddPrimitive(PrimitiveType.Cylinder, root.transform, new Vector3(-0.6f, 0.05f, -0.4f), new Vector3(0.05f, 0.3f, 0.05f), new Vector3(0, 0, 90f), "Cable");
             return root;
         }
 
         private static GameObject CreatePadWrapper()
         {
             GameObject root = new GameObject("PadWrapper");
-            GameObject wrapper = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            wrapper.transform.SetParent(root.transform, false);
-            wrapper.transform.localScale = new Vector3(1.1f, 0.1f, 1.1f);
-            GameObject pad = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            pad.transform.SetParent(root.transform, false);
-            pad.transform.localPosition = new Vector3(0f, 0.08f, 0f);
-            pad.transform.localScale = new Vector3(0.6f, 0.05f, 0.6f);
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0, 0.02f, 0), new Vector3(1.1f, 0.04f, 1.1f), Vector3.zero, "Wrapper");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0, 0.06f, 0), new Vector3(0.7f, 0.03f, 0.7f), Vector3.zero, "Pad");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0.45f, 0.04f, 0), new Vector3(0.08f, 0.02f, 0.9f), Vector3.zero, "Seal");
             return root;
         }
 
         private static GameObject CreateSpill()
         {
-            GameObject spill = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            spill.transform.localScale = new Vector3(1.2f, 0.05f, 1.2f);
-            return spill;
+            GameObject root = new GameObject("Spill");
+            AddPrimitive(PrimitiveType.Cylinder, root.transform, Vector3.zero, new Vector3(1.2f, 0.03f, 1.2f), Vector3.zero, "MainSpill");
+            AddPrimitive(PrimitiveType.Sphere, root.transform, new Vector3(0.5f, 0.02f, 0.2f), new Vector3(0.15f, 0.05f, 0.15f), Vector3.zero, "Droplet1");
+            AddPrimitive(PrimitiveType.Sphere, root.transform, new Vector3(-0.4f, 0.02f, -0.3f), new Vector3(0.12f, 0.05f, 0.12f), Vector3.zero, "Droplet2");
+            AddPrimitive(PrimitiveType.Sphere, root.transform, new Vector3(0.2f, 0.02f, -0.5f), new Vector3(0.1f, 0.05f, 0.1f), Vector3.zero, "Droplet3");
+            return root;
         }
 
         private static GameObject CreateBag()
         {
-            GameObject bag = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            bag.transform.localScale = new Vector3(1f, 0.7f, 0.5f);
-            return bag;
+            GameObject root = new GameObject("AntistaticBag");
+            AddPrimitive(PrimitiveType.Cube, root.transform, Vector3.zero, new Vector3(1f, 0.75f, 0.5f), Vector3.zero, "Bag");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0, 0.35f, 0.26f), new Vector3(1f, 0.05f, 0.05f), Vector3.zero, "Seal");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0, -0.1f, 0.22f), new Vector3(0.6f, 0.4f, 0.02f), Vector3.zero, "Label");
+            return root;
         }
 
         private static GameObject CreateFlowTrace()
         {
             GameObject root = new GameObject("FlowTrace");
             var line = root.AddComponent<LineRenderer>();
-            line.positionCount = 4;
+            line.positionCount = 6;
             line.useWorldSpace = false;
-            line.widthMultiplier = 0.05f;
-            line.SetPosition(0, new Vector3(-0.4f, 0f, -0.2f));
-            line.SetPosition(1, new Vector3(0.2f, 0f, 0.1f));
-            line.SetPosition(2, new Vector3(-0.1f, 0f, 0.4f));
-            line.SetPosition(3, new Vector3(0.4f, 0f, -0.1f));
+            line.widthMultiplier = 0.04f;
+            line.SetPosition(0, new Vector3(-0.5f, 0f, -0.3f));
+            line.SetPosition(1, new Vector3(-0.1f, 0f, 0.05f));
+            line.SetPosition(2, new Vector3(0.3f, 0f, 0.3f));
+            line.SetPosition(3, new Vector3(-0.2f, 0f, 0.5f));
+            line.SetPosition(4, new Vector3(0.4f, 0f, 0.1f));
+            line.SetPosition(5, new Vector3(0.6f, 0f, -0.2f));
+
+            AddPrimitive(PrimitiveType.Cylinder, root.transform, new Vector3(0.6f, 0f, -0.2f), new Vector3(0.06f, 0.12f, 0.06f), new Vector3(90f, 0f, 0f), "Arrow");
 
             var collider = root.AddComponent<BoxCollider>();
-            collider.size = new Vector3(1f, 0.2f, 1f);
+            collider.size = new Vector3(1.6f, 0.2f, 1.6f);
 
             return root;
         }
 
         private static GameObject CreateWallStash()
         {
-            GameObject panel = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            panel.transform.localScale = new Vector3(1f, 1f, 0.1f);
-            return panel;
+            GameObject root = new GameObject("WallStash");
+            AddPrimitive(PrimitiveType.Cube, root.transform, Vector3.zero, new Vector3(1f, 1f, 0.08f), Vector3.zero, "Panel");
+            AddPrimitive(PrimitiveType.Cube, root.transform, new Vector3(0f, 0f, -0.03f), new Vector3(0.7f, 0.7f, 0.02f), Vector3.zero, "Recess");
+            return root;
+        }
+
+        private static GameObject AddPrimitive(PrimitiveType type, Transform parent, Vector3 localPosition, Vector3 localScale, Vector3 localEuler, string name)
+        {
+            GameObject go = GameObject.CreatePrimitive(type);
+            if (!string.IsNullOrEmpty(name))
+            {
+                go.name = name;
+            }
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = localPosition;
+            go.transform.localEulerAngles = localEuler;
+            go.transform.localScale = localScale;
+            return go;
         }
 
         private static Color ColorForRecipe(ClueRecipe recipe)
