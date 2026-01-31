@@ -14,12 +14,16 @@ namespace TheTear.AR
         public ARRaycastManager raycastManager;
         public Camera arCamera;
         public SceneRootController sceneRoot;
+        public bool allowEstimatedPlane = true;
+        public bool allowFallbackPlacement = true;
+        public float fallbackDistance = 1.4f;
 
         public bool IsPlacementActive => placementActive;
 
         public event Action OnPlaced;
         public event Action OnRelocate;
         public event Action<bool> OnTrackingStateChanged;
+        public event Action OnFallbackPlaced;
 
         private static readonly List<ARRaycastHit> Hits = new List<ARRaycastHit>();
         private bool placementActive = true;
@@ -47,10 +51,30 @@ namespace TheTear.AR
                 return;
             }
 
-            if (raycastManager.Raycast(screenPos, Hits, TrackableType.PlaneWithinPolygon))
+            TrackableType trackableTypes = TrackableType.PlaneWithinPolygon;
+            if (allowEstimatedPlane)
+            {
+                trackableTypes |= TrackableType.PlaneEstimated;
+            }
+
+            if (raycastManager.Raycast(screenPos, Hits, trackableTypes))
             {
                 Pose pose = Hits[0].pose;
                 PlaceAtPose(pose);
+                return;
+            }
+
+            if (allowFallbackPlacement && arCamera != null)
+            {
+                Vector3 forward = Vector3.ProjectOnPlane(arCamera.transform.forward, Vector3.up).normalized;
+                if (forward.sqrMagnitude < 0.001f)
+                {
+                    forward = arCamera.transform.forward;
+                }
+                Vector3 position = arCamera.transform.position + forward * fallbackDistance;
+                Quaternion rotation = Quaternion.LookRotation(forward, Vector3.up);
+                PlaceAtPose(new Pose(position, rotation));
+                OnFallbackPlaced?.Invoke();
             }
         }
 

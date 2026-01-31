@@ -109,6 +109,7 @@ namespace TheTear.Core
                 arPlacement.OnPlaced += HandlePlaced;
                 arPlacement.OnRelocate += HandleRelocate;
                 arPlacement.OnTrackingStateChanged += HandleTrackingChanged;
+                arPlacement.OnFallbackPlaced += HandleFallbackPlaced;
                 arPlacement.BeginPlacement();
             }
 
@@ -119,7 +120,7 @@ namespace TheTear.Core
 
             if (hud != null)
             {
-                hud.SetObjective("Tap a detected plane to place the investigation bubble.");
+                hud.SetObjective("Tap a detected plane to place the investigation bubble. If none appear, tap to place in front.");
             }
 
             CheckLayers();
@@ -202,6 +203,14 @@ namespace TheTear.Core
             if (toast != null)
             {
                 toast.Show("Investigation bubble moved.");
+            }
+        }
+
+        private void HandleFallbackPlaced()
+        {
+            if (toast != null)
+            {
+                toast.Show("No plane detected. Placed bubble in front of camera.");
             }
         }
 
