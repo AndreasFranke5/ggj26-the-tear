@@ -46,7 +46,7 @@ namespace TheTear.Editor
             GameObject gmGo = new GameObject("GameManager");
             var gameManager = gmGo.AddComponent<GameManager>();
             var placement = gmGo.AddComponent<ARPlacementController>();
-            var character = gmGo.AddComponent<TheTear.Characters.CharacterController>();
+            var character = gmGo.AddComponent<TheTear.Characters.CharacterManager>();
             var clueManager = gmGo.AddComponent<ClueManager>();
             var telemetry = gmGo.AddComponent<TelemetryRecorder>();
             var debugOverlay = gmGo.AddComponent<DebugOverlay>();
@@ -411,7 +411,7 @@ namespace TheTear.Editor
             text.fontSize = fontSize;
             text.color = color;
             text.alignment = anchor;
-            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             text.raycastTarget = false;
             return text;
         }

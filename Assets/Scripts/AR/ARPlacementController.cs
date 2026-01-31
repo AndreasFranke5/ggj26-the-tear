@@ -108,7 +108,7 @@ namespace TheTear.AR
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Began)
+                if (touch.phase == UnityEngine.TouchPhase.Began)
                 {
                     screenPos = touch.position;
                     return true;

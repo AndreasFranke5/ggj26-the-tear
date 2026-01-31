@@ -49,10 +49,40 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.6f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Interaction\IInteractable.cs" />
+    <Compile Include="Assets\Scripts\Story\ClueGraph.cs" />
+    <Compile Include="Assets\Scripts\UI\OverlayController.cs" />
     <Compile Include="Assets\MobileARTemplateAssets\UI\Scripts\CutoutMaskUI.cs" />
     <Compile Include="Assets\MobileARTemplateAssets\Scripts\ARTemplateMenuManager.cs" />
+    <Compile Include="Assets\Scripts\UI\DeductionController.cs" />
+    <Compile Include="Assets\Scripts\Story\ClusterModel.cs" />
+    <Compile Include="Assets\Scripts\Factory\MaterialFactory.cs" />
+    <Compile Include="Assets\Scripts\Story\StoryLoader.cs" />
+    <Compile Include="Assets\Scripts\Telemetry\TelemetryRecorder.cs" />
+    <Compile Include="Assets\Scripts\Story\StoryModel.cs" />
     <Compile Include="Assets\MobileARTemplateAssets\Scripts\GoalManager.cs" />
+    <Compile Include="Assets\Scripts\Interaction\TapRaycaster.cs" />
+    <Compile Include="Assets\Scripts\Characters\CharacterDescriptions.cs" />
+    <Compile Include="Assets\Scripts\UI\ErrorPanelController.cs" />
+    <Compile Include="Assets\Scripts\UI\UITextHelper.cs" />
     <Compile Include="Assets\Settings\Project Configuration\SceneTemplate_RotateCube.cs" />
+    <Compile Include="Assets\Scripts\Factory\ClueFactory.cs" />
+    <Compile Include="Assets\Scripts\Core\AppState.cs" />
+    <Compile Include="Assets\Scripts\Story\StoryValidator.cs" />
+    <Compile Include="Assets\Scripts\UI\JournalController.cs" />
+    <Compile Include="Assets\Scripts\UI\PauseMenuController.cs" />
+    <Compile Include="Assets\Scripts\UI\ToastController.cs" />
+    <Compile Include="Assets\Scripts\AR\SceneRootController.cs" />
+    <Compile Include="Assets\Scripts\Factory\ClueRecipe.cs" />
+    <Compile Include="Assets\Scripts\Characters\CharacterController.cs" />
+    <Compile Include="Assets\Scripts\UI\HUDController.cs" />
+    <Compile Include="Assets\Scripts\Story\ClueManager.cs" />
+    <Compile Include="Assets\Scripts\Characters\CharacterMode.cs" />
+    <Compile Include="Assets\Scripts\Core\GameManager.cs" />
+    <Compile Include="Assets\Scripts\AR\ARPlacementController.cs" />
+    <Compile Include="Assets\Scripts\Debug\DebugOverlay.cs" />
+    <Compile Include="Assets\Scripts\Interaction\InteractableClue.cs" />
+    <Compile Include="Assets\Scripts\Story\ClueState.cs" />
     <Compile Include="Assets\MobileARTemplateAssets\Scripts\ARPlaneMeshVisualizerFader.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +96,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
@@ -1239,17 +1270,20 @@
     <ProjectReference Include="Unity.XR.Management.csproj" />
     <ProjectReference Include="UnityEngine.SpatialTracking.csproj" />
     <ProjectReference Include="Unity.XR.ARSubsystems.Editor.csproj" />
+    <ProjectReference Include="Unity.XR.Interaction.Toolkit.Samples.InteractionSimulator.csproj" />
     <ProjectReference Include="Unity.TestTools.CodeCoverage.Editor.csproj" />
     <ProjectReference Include="Unity.Timeline.csproj" />
     <ProjectReference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.csproj" />
     <ProjectReference Include="Unity.EditorCoroutines.Editor.csproj" />
     <ProjectReference Include="Unity.XR.ARKit.FaceTracking.csproj" />
     <ProjectReference Include="Unity.Searcher.Editor.csproj" />
+    <ProjectReference Include="Unity.XR.Management.Samples.Editor.csproj" />
     <ProjectReference Include="Unity.XR.CoreUtils.csproj" />
     <ProjectReference Include="Unity.Burst.Editor.csproj" />
     <ProjectReference Include="Unity.XR.ARFoundation.VisualScripting.csproj" />
     <ProjectReference Include="Unity.Mathematics.Editor.csproj" />
     <ProjectReference Include="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj" />
+    <ProjectReference Include="Unity.XR.Management.Samples.csproj" />
     <ProjectReference Include="Unity.Tutorials.Core.Editor.csproj" />
     <ProjectReference Include="Unity.XR.ARFoundation.Editor.csproj" />
     <ProjectReference Include="UnityEditor.SpatialTracking.csproj" />
@@ -1267,6 +1301,7 @@
     <ProjectReference Include="Unity.InternalAPIEditorBridge.007.csproj" />
     <ProjectReference Include="Unity.VisualStudio.Editor.csproj" />
     <ProjectReference Include="Unity.XR.ARKit.csproj" />
+    <ProjectReference Include="Unity.XR.Interaction.Toolkit.Samples.InteractionSimulator.Editor.csproj" />
     <ProjectReference Include="Unity.XR.ARFoundation.VisualScripting.Editor.csproj" />
     <ProjectReference Include="Unity.XR.ARFoundation.InternalUtils.csproj" />
     <ProjectReference Include="UnityEditor.XR.LegacyInputHelpers.csproj" />

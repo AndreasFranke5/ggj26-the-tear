@@ -49,16 +49,16 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.6f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Runtime\IXRLoaderPreInit.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Runtime\XRConfigurationData.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Runtime\XRGeneralSettings.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Runtime\XRManagementAnalytics.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Runtime\XRManagerSettings.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Runtime\XRLoader.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Runtime\XRLoaderHelper.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Runtime\IXRLoaderPreInit.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Runtime\XRConfigurationData.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Runtime\XRGeneralSettings.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Runtime\XRManagementAnalytics.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Runtime\XRManagerSettings.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Runtime\XRLoader.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Runtime\XRLoaderHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Runtime\Unity.XR.Management.asmdef" />
+    <None Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Runtime\Unity.XR.Management.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

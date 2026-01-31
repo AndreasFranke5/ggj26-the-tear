@@ -49,41 +49,41 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.6f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\Metadata\XRPackageMetadata.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\AndroidManifest\AndroidManifestDocument.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRLoaderInfo.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRPackageInitializationSettings.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRGeneralBuildProcessor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\AndroidManifest\IAndroidManifestRequirementProvider.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\Metadata\XRPackageMetadataStore.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRGeneralSettingsUpgrade.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRPackageInitialization.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\PackageNotificationUtils.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\AndroidManifest\AndroidManifestBuildEventReceiver.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRManagerEditor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRSupportedBuildTargetAttribute.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\TypeLoaderExtensions.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRCustomLoaderUI.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRSettingsManager.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRConstants.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\EditorUtilities.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRLoaderOrderUI.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRGeneralSettingsPerBuildTarget.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\BuildHelpers.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\Metadata\XRPackage.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRCustomLoaderUIManager.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRLoaderInfoManager.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\AndroidManifest\AndroidManifestProcessor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\Metadata\KnownPackages.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRConfigurationProvider.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XREditorWorkQueue.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\AndroidManifest\ManifestElement.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRPluginManagementProjectValidation.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\XRBuildProcessorHelper.cs" />
-    <Compile Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\AndroidManifest\ManifestRequirement.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\Metadata\XRPackageMetadata.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\AndroidManifest\AndroidManifestDocument.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRLoaderInfo.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRPackageInitializationSettings.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRGeneralBuildProcessor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\AndroidManifest\IAndroidManifestRequirementProvider.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\Metadata\XRPackageMetadataStore.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRGeneralSettingsUpgrade.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRPackageInitialization.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\PackageNotificationUtils.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\AndroidManifest\AndroidManifestBuildEventReceiver.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRManagerEditor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRSupportedBuildTargetAttribute.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\TypeLoaderExtensions.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRCustomLoaderUI.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRSettingsManager.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRConstants.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\EditorUtilities.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRLoaderOrderUI.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRGeneralSettingsPerBuildTarget.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\BuildHelpers.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\Metadata\XRPackage.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRCustomLoaderUIManager.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRLoaderInfoManager.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\AndroidManifest\AndroidManifestProcessor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\Metadata\KnownPackages.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRConfigurationProvider.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XREditorWorkQueue.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\AndroidManifest\ManifestElement.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRPluginManagementProjectValidation.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\XRBuildProcessorHelper.cs" />
+    <Compile Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\AndroidManifest\ManifestRequirement.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Library\PackageCache\com.unity.xr.management@574ebfb1e976\Editor\Unity.XR.Management.Editor.asmdef" />
+    <None Include="Library\PackageCache\com.unity.xr.management@e3a3882b360a\Editor\Unity.XR.Management.Editor.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -4,7 +4,7 @@ using TheTear.UI;
 
 namespace TheTear.Characters
 {
-    public class CharacterController : MonoBehaviour
+    public class CharacterManager : MonoBehaviour
     {
         public Camera arCamera;
         public OverlayController overlayController;
