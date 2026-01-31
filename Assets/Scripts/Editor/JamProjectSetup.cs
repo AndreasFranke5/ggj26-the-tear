@@ -28,6 +28,7 @@ namespace TheTear.Editor
         [MenuItem("Jam/Generate Scene")]
         public static void GenerateScene()
         {
+            DisableInteractionSimulatorAutoload();
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             bool useTmp = TmpEssentialsAvailable();
 
@@ -268,6 +269,7 @@ namespace TheTear.Editor
         [MenuItem("Jam/Validate Project")]
         public static void ValidateProject()
         {
+            DisableInteractionSimulatorAutoload();
             ValidateStoryInEditor();
             CheckLayers();
         }
@@ -303,6 +305,52 @@ namespace TheTear.Editor
             {
                 Debug.LogError("Missing layers for VOID/FLOW. Add in Edit > Project Settings > Tags and Layers: set Layer 6 = \"Void\" and Layer 7 = \"Flow\".");
             }
+        }
+
+        private static void DisableInteractionSimulatorAutoload()
+        {
+            Type settingsType = Type.GetType("UnityEngine.XR.Interaction.Toolkit.Inputs.Simulation.XRDeviceSimulatorSettings, Unity.XR.Interaction.Toolkit");
+            if (settingsType == null)
+            {
+                return;
+            }
+
+            object settings = null;
+            PropertyInfo instanceProp = settingsType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            if (instanceProp != null)
+            {
+                settings = instanceProp.GetValue(null, null);
+            }
+
+            if (settings == null)
+            {
+                MethodInfo getInstance = settingsType.GetMethod("GetInstanceOrLoadOnly", BindingFlags.Static | BindingFlags.NonPublic);
+                if (getInstance != null)
+                {
+                    settings = getInstance.Invoke(null, null);
+                }
+            }
+
+            if (settings == null)
+            {
+                return;
+            }
+
+            var unityObj = settings as UnityEngine.Object;
+            if (unityObj == null)
+            {
+                return;
+            }
+
+            SerializedObject serialized = new SerializedObject(unityObj);
+            SerializedProperty autoProp = serialized.FindProperty("m_AutomaticallyInstantiateSimulatorPrefab");
+            if (autoProp != null)
+            {
+                autoProp.boolValue = false;
+            }
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(unityObj);
+            AssetDatabase.SaveAssets();
         }
 
         private static GameObject CreateUIRoot(string name, Transform parent)
