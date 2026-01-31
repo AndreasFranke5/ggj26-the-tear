@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TheTear.AR;
 using TheTear.Characters;
-using CharacterController = TheTear.Characters.CharacterController;
 using TheTear.Interaction;
 using TheTear.Story;
 using TheTear.Telemetry;
@@ -15,7 +14,7 @@ namespace TheTear.Core
     {
         public ARPlacementController arPlacement;
         public SceneRootController sceneRoot;
-        public CharacterController characterController;
+        public CharacterModeController characterController;
         public ClueManager clueManager;
         public TelemetryRecorder telemetry;
         public TapRaycaster tapRaycaster;

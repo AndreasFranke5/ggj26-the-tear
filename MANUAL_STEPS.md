@@ -28,6 +28,19 @@
 - If planes are hard to detect, keep the device moving slowly for a few seconds, then tap.
 - Use the Relocate button anytime to recalibrate.
 
+7) Fast testing loop (USB, no manual APK transfer):
+- Enable Developer Options + USB Debugging on the phone.
+- Plug in via USB and accept the RSA prompt on the device.
+- In Unity: File > Build Settings > Android > Build And Run.
+- Keep “Development Build” enabled for faster iteration.
+- Unity installs and launches directly on the phone each time.
+- Use Window > Analysis > Android Logcat to view device logs.
+
+8) Editor testing (no phone):
+- Switch platform to PC/Mac/Linux Standalone.
+- Edit > Project Settings > XR Plug‑in Management > Standalone: enable XR Simulation.
+- Press Play and use the XR Simulation controls to move the camera.
+
 7) Upgrading clue visuals to real 3D objects:
 - Import meshes into `Assets/Art/` (or any folder).
 - Open `Assets/Scripts/Factory/ClueFactory.cs`.

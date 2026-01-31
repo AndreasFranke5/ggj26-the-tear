@@ -61,7 +61,7 @@ namespace TheTear.Editor
             GameObject gmGo = new GameObject("GameManager");
             var gameManager = gmGo.AddComponent<GameManager>();
             var placement = gmGo.AddComponent<ARPlacementController>();
-            var character = gmGo.AddComponent<TheTear.Characters.CharacterController>();
+            var character = gmGo.AddComponent<TheTear.Characters.CharacterModeController>();
             var clueManager = gmGo.AddComponent<ClueManager>();
             var telemetry = gmGo.AddComponent<TelemetryRecorder>();
             var debugOverlay = gmGo.AddComponent<DebugOverlay>();
@@ -101,10 +101,10 @@ namespace TheTear.Editor
             GameObject modalsGo = CreateUIRoot("Modals", canvasGo.transform);
 
             // Overlays
-            var matterTint = CreateFullscreenImage("MatterTint", overlaysGo.transform, new Color(0.2f, 0.25f, 0.3f, 0.2f));
-            var voidTint = CreateFullscreenImage("VoidTint", overlaysGo.transform, new Color(0.1f, 0.35f, 0.5f, 0.25f));
-            var flowTint = CreateFullscreenImage("FlowTint", overlaysGo.transform, new Color(0.7f, 0.4f, 0.1f, 0.25f));
-            var fadeFlash = CreateFullscreenImage("FadeFlash", overlaysGo.transform, new Color(0.95f, 0.95f, 0.95f, 0.6f));
+            var matterTint = CreateFullscreenImage("MatterTint", overlaysGo.transform, new Color(0.2f, 0.25f, 0.3f, 1f));
+            var voidTint = CreateFullscreenImage("VoidTint", overlaysGo.transform, new Color(0.1f, 0.35f, 0.5f, 1f));
+            var flowTint = CreateFullscreenImage("FlowTint", overlaysGo.transform, new Color(0.7f, 0.4f, 0.1f, 1f));
+            var fadeFlash = CreateFullscreenImage("FadeFlash", overlaysGo.transform, new Color(0.95f, 0.95f, 0.95f, 1f));
 
             CanvasGroup matterGroup = matterTint.gameObject.AddComponent<CanvasGroup>();
             CanvasGroup voidGroup = voidTint.gameObject.AddComponent<CanvasGroup>();

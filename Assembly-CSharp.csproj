@@ -69,12 +69,12 @@
     <Compile Include="Assets\Scripts\Factory\ClueFactory.cs" />
     <Compile Include="Assets\Scripts\Core\AppState.cs" />
     <Compile Include="Assets\Scripts\Story\StoryValidator.cs" />
+    <Compile Include="Assets\Scripts\Characters\CharacterModeController.cs" />
     <Compile Include="Assets\Scripts\UI\JournalController.cs" />
     <Compile Include="Assets\Scripts\UI\PauseMenuController.cs" />
     <Compile Include="Assets\Scripts\UI\ToastController.cs" />
     <Compile Include="Assets\Scripts\AR\SceneRootController.cs" />
     <Compile Include="Assets\Scripts\Factory\ClueRecipe.cs" />
-    <Compile Include="Assets\Scripts\Characters\CharacterController.cs" />
     <Compile Include="Assets\Scripts\UI\HUDController.cs" />
     <Compile Include="Assets\Scripts\Story\ClueManager.cs" />
     <Compile Include="Assets\Scripts\Characters\CharacterMode.cs" />
