@@ -3,20 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-#endif
 
 namespace TheTear.AR
 {
     public class ARPlacementController : MonoBehaviour
     {
         public ARRaycastManager raycastManager;
+        public ARPlaneManager planeManager;
         public Camera arCamera;
         public SceneRootController sceneRoot;
-        public bool allowEstimatedPlane = true;
-        public bool allowFallbackPlacement = true;
-        public float fallbackDistance = 1.4f;
         public Transform reticle;
 
         public bool IsPlacementActive => placementActive;
@@ -54,36 +49,17 @@ namespace TheTear.AR
                 return;
             }
 
-            TrackableType trackableTypes = TrackableType.PlaneWithinPolygon;
-            if (allowEstimatedPlane)
+            if (raycastManager.Raycast(screenPos, Hits, TrackableType.PlaneWithinPolygon))
             {
-                trackableTypes |= TrackableType.PlaneEstimated;
-            }
-
-            if (raycastManager.Raycast(screenPos, Hits, trackableTypes))
-            {
-                Pose pose = Hits[0].pose;
+                Pose pose = AlignPoseToCameraYaw(Hits[0].pose);
                 PlaceAtPose(pose);
-                return;
-            }
-
-            if (allowFallbackPlacement && arCamera != null)
-            {
-                Vector3 forward = Vector3.ProjectOnPlane(arCamera.transform.forward, Vector3.up).normalized;
-                if (forward.sqrMagnitude < 0.001f)
-                {
-                    forward = arCamera.transform.forward;
-                }
-                Vector3 position = arCamera.transform.position + forward * fallbackDistance;
-                Quaternion rotation = Quaternion.LookRotation(forward, Vector3.up);
-                PlaceAtPose(new Pose(position, rotation));
-                OnFallbackPlaced?.Invoke();
             }
         }
 
         public void BeginPlacement()
         {
             placementActive = true;
+            SetPlaneVisualization(true);
             if (reticle != null)
             {
                 reticle.gameObject.SetActive(false);
@@ -104,6 +80,7 @@ namespace TheTear.AR
 
             sceneRoot.transform.SetPositionAndRotation(pose.position, pose.rotation);
             placementActive = false;
+            SetPlaneVisualization(false);
             if (reticle != null)
             {
                 reticle.gameObject.SetActive(false);
@@ -123,9 +100,9 @@ namespace TheTear.AR
         private bool TryGetTap(out Vector2 screenPos)
         {
 #if ENABLE_INPUT_SYSTEM
-            if (Touchscreen.current != null)
+            if (UnityEngine.InputSystem.Touchscreen.current != null)
             {
-                var touch = Touchscreen.current.primaryTouch;
+                var touch = UnityEngine.InputSystem.Touchscreen.current.primaryTouch;
                 if (touch.press.wasPressedThisFrame)
                 {
                     screenPos = touch.position.ReadValue();
@@ -133,16 +110,16 @@ namespace TheTear.AR
                 }
             }
 
-            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+            if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
             {
-                screenPos = Mouse.current.position.ReadValue();
+                screenPos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
                 return true;
             }
 #endif
 
             if (Input.touchCount > 0)
             {
-                Touch touch = Input.GetTouch(0);
+                UnityEngine.Touch touch = Input.GetTouch(0);
                 if (touch.phase == UnityEngine.TouchPhase.Began)
                 {
                     screenPos = touch.position;
@@ -168,28 +145,16 @@ namespace TheTear.AR
 
         private void UpdateReticle()
         {
-            if (reticle == null || arCamera == null)
+            if (reticle == null || arCamera == null || raycastManager == null)
             {
                 return;
             }
 
             Vector2 screenCenter = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-            TrackableType trackableTypes = TrackableType.PlaneWithinPolygon;
-            if (allowEstimatedPlane)
+            if (raycastManager.Raycast(screenCenter, Hits, TrackableType.PlaneWithinPolygon))
             {
-                trackableTypes |= TrackableType.PlaneEstimated;
-            }
-
-            if (raycastManager.Raycast(screenCenter, Hits, trackableTypes))
-            {
-                Pose pose = Hits[0].pose;
-                Vector3 forward = Vector3.ProjectOnPlane(arCamera.transform.forward, pose.up).normalized;
-                if (forward.sqrMagnitude < 0.001f)
-                {
-                    forward = Vector3.forward;
-                }
-                Quaternion rotation = Quaternion.LookRotation(forward, pose.up);
-                reticle.SetPositionAndRotation(pose.position, rotation);
+                Pose pose = AlignPoseToCameraYaw(Hits[0].pose);
+                reticle.SetPositionAndRotation(pose.position, pose.rotation);
                 if (!reticle.gameObject.activeSelf)
                 {
                     reticle.gameObject.SetActive(true);
@@ -198,6 +163,41 @@ namespace TheTear.AR
             else if (reticle.gameObject.activeSelf)
             {
                 reticle.gameObject.SetActive(false);
+            }
+        }
+
+        private Pose AlignPoseToCameraYaw(Pose pose)
+        {
+            if (arCamera == null)
+            {
+                return pose;
+            }
+
+            Vector3 forward = Vector3.ProjectOnPlane(arCamera.transform.forward, pose.up).normalized;
+            if (forward.sqrMagnitude < 0.001f)
+            {
+                forward = Vector3.ProjectOnPlane(arCamera.transform.forward, Vector3.up).normalized;
+            }
+            if (forward.sqrMagnitude < 0.001f)
+            {
+                forward = Vector3.forward;
+            }
+
+            Quaternion rotation = Quaternion.LookRotation(forward, pose.up);
+            return new Pose(pose.position, rotation);
+        }
+
+        private void SetPlaneVisualization(bool active)
+        {
+            if (planeManager == null)
+            {
+                return;
+            }
+
+            planeManager.enabled = active;
+            foreach (var plane in planeManager.trackables)
+            {
+                plane.gameObject.SetActive(active);
             }
         }
     }

@@ -17,18 +17,25 @@
 
 4) Generate scene:
 - In Unity, click Jam > Generate Scene
+- This creates `Assets/Scenes/Main.unity` and `Assets/Art/PrefabLibrary.asset`
 - Press Play to test
 
-5) Build APK:
+5) Optional prefab pipeline (artist workflow):
+- Import meshes into `Assets/Art/` (any folder)
+- Create prefabs with colliders
+- Register them in `Assets/Art/PrefabLibrary.asset`
+- See `ART_PIPELINE.md` for full steps
+
+6) Build APK:
 - File > Build Settings > Build
 - Use Development Build for testing, then non-Development for submission
 
-6) Floor calibration / placement:
-- On device, the first tap places the investigation bubble on a detected plane (this is your floor calibration).
+7) Floor calibration / placement:
+- On device, the first tap places the investigation bubble on a detected plane.
 - If planes are hard to detect, keep the device moving slowly for a few seconds, then tap.
 - Use the Relocate button anytime to recalibrate.
 
-7) Fast testing loop (USB, no manual APK transfer):
+8) Fast testing loop (USB, no manual APK transfer):
 - Enable Developer Options + USB Debugging on the phone.
 - Plug in via USB and accept the RSA prompt on the device.
 - In Unity: File > Build Settings > Android > Build And Run.
@@ -37,19 +44,10 @@
 - Use Window > Analysis > Android Logcat to view device logs.
 - If adb is not found, add <SDK>/platform-tools to PATH (Unity Preferences > External Tools).
 
-8) Editor testing (no phone):
+9) Editor testing (no phone):
 - Switch platform to PC/Mac/Linux Standalone.
 - Edit > Project Settings > XR Plug-in Management > Standalone: enable XR Simulation.
 - Press Play and use the XR Simulation controls to move the camera.
-
-9) Upgrading clue visuals to real 3D objects:
-- Import meshes into `Assets/Art/` (or any folder).
-- Open `Assets/Scripts/Factory/ClueFactory.cs`.
-- Replace the primitive builders (`CreateLanyard`, `CreateDock`, etc.) with mesh-based versions:
-  - Create a GameObject, add `MeshFilter`, assign your mesh (`sharedMesh`).
-  - Add `MeshRenderer` and assign a material.
-  - Add a collider so taps still work.
-- Run Jam > Generate Scene again and test on device.
 
 10) Troubleshooting:
 - PowerToys Monaco Preview can crash Unity builds; disable the Preview Pane or the Monaco plugin.

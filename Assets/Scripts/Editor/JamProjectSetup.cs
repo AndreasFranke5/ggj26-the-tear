@@ -12,6 +12,7 @@ using TheTear.AR;
 using TheTear.Characters;
 using TheTear.Core;
 using TheTear.Debugging;
+using TheTear.Factory;
 using TheTear.Interaction;
 using TheTear.Story;
 using TheTear.Telemetry;
@@ -31,6 +32,7 @@ namespace TheTear.Editor
             DisableInteractionSimulatorAutoload();
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             bool useTmp = TmpEssentialsAvailable();
+            PrefabLibrary prefabLibrary = GetOrCreatePrefabLibrary();
 
             // AR foundation objects
             GameObject arSessionGo = new GameObject("ARSession", typeof(ARSession));
@@ -167,11 +169,13 @@ namespace TheTear.Editor
             journalPanel.SetActive(false);
             var journalController = journalPanel.AddComponent<JournalController>();
             journalController.panelRoot = journalPanel;
+            journalController.titleText = journalTitle;
             journalController.clusterText = clusterText;
             journalController.clueListText = clueListText;
             journalController.closeButton = journalClose;
             journalController.unlockButton = journalUnlock;
             journalController.deductionButton = journalDeduction;
+            journalController.toast = toastController;
 
             // Pause modal
             GameObject pauseModal = CreateModal(modalsGo.transform, "PauseModal", new Color(0, 0, 0, 0.65f));
@@ -236,6 +240,7 @@ namespace TheTear.Editor
 
             // Wire references
             placement.raycastManager = arManagersGo.GetComponent<ARRaycastManager>();
+            placement.planeManager = arManagersGo.GetComponent<ARPlaneManager>();
             placement.arCamera = arCameraGo.GetComponent<Camera>();
             placement.sceneRoot = sceneRoot;
             placement.reticle = reticleGo != null ? reticleGo.transform : null;
@@ -274,6 +279,8 @@ namespace TheTear.Editor
 
             debugOverlay.clueManager = clueManager;
             debugOverlay.deductionController = deductionController;
+
+            clueManager.prefabLibrary = prefabLibrary;
 
             // Save scene
             string scenePath = "Assets/Scenes/Main.unity";
@@ -665,6 +672,27 @@ namespace TheTear.Editor
             {
                 prop.SetValue(component, value, null);
             }
+        }
+
+        private static PrefabLibrary GetOrCreatePrefabLibrary()
+        {
+            const string folder = "Assets/Art";
+            const string assetPath = "Assets/Art/PrefabLibrary.asset";
+
+            if (!AssetDatabase.IsValidFolder(folder))
+            {
+                AssetDatabase.CreateFolder("Assets", "Art");
+            }
+
+            PrefabLibrary library = AssetDatabase.LoadAssetAtPath<PrefabLibrary>(assetPath);
+            if (library == null)
+            {
+                library = ScriptableObject.CreateInstance<PrefabLibrary>();
+                AssetDatabase.CreateAsset(library, assetPath);
+                AssetDatabase.SaveAssets();
+            }
+
+            return library;
         }
     }
 }

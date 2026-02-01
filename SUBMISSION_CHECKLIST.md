@@ -6,9 +6,12 @@
 - [ ] ARCore enabled in XR Plug-in Management (Android)
 - [ ] Active Input Handling set (Both or New)
 - [ ] TMP Essentials imported
+- [ ] Placement: first tap on a plane anchors SceneRoot; evidence stays in the room when walking
+- [ ] Evidence validator passes (no Canvas/Camera parenting, colliders present)
+- [ ] Tapping evidence unlocks eligible clues; blocked taps show "Something is missing"
+- [ ] Journal unlock only works when eligible and disables when none
+- [ ] Mode buttons show active state; Void/Flow layers appear via culling masks
 - [ ] Deduction board reachable and win/lose states verified
-- [ ] Telemetry log created in Application.persistentDataPath
-- [ ] Clue visuals confirmed (procedural or upgraded meshes)
-- [ ] Placement calibration verified (first tap places bubble on a plane)
+- [ ] No TouchPhase ambiguity compile errors
 - [ ] Build APK (non-Development) for submission
-- [ ] README updated with Run Book
+- [ ] Tested on at least two Android devices

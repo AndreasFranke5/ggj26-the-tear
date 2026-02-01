@@ -7,6 +7,9 @@ namespace TheTear.Story
     {
         public string id;
         public string name;
+        public string title;
+        public string description;
+        public string completionText;
         public string[] clueIds;
     }
 }

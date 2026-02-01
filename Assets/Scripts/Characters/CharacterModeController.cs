@@ -13,6 +13,8 @@ namespace TheTear.Characters
 
         public CharacterMode CurrentMode => currentMode;
 
+        public event System.Action<CharacterMode> OnModeChanged;
+
         private CharacterMode currentMode = CharacterMode.Matter;
         private int voidLayer = -1;
         private int flowLayer = -1;
@@ -37,6 +39,7 @@ namespace TheTear.Characters
 
             currentMode = mode;
             ApplyMode(mode);
+            OnModeChanged?.Invoke(mode);
 
             if (telemetry != null)
             {
@@ -63,7 +66,8 @@ namespace TheTear.Characters
         {
             if (arCamera != null)
             {
-                int mask = (1 << LayerMask.NameToLayer("Default")) | (1 << LayerMask.NameToLayer("UI"));
+                int defaultLayer = LayerMask.NameToLayer("Default");
+                int mask = defaultLayer >= 0 ? (1 << defaultLayer) : 0;
                 if (mode == CharacterMode.Void && voidLayer >= 0)
                 {
                     mask |= 1 << voidLayer;

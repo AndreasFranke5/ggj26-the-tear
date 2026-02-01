@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TheTear.Characters;
+using UnityEngine.UI;
 
 namespace TheTear.UI
 {
@@ -54,6 +55,12 @@ namespace TheTear.UI
             group.interactable = false;
             group.blocksRaycasts = false;
             group.ignoreParentGroups = true;
+
+            var graphics = group.GetComponentsInChildren<Graphic>(true);
+            foreach (var graphic in graphics)
+            {
+                graphic.raycastTarget = false;
+            }
         }
     }
 }

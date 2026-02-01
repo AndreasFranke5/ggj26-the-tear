@@ -8,11 +8,13 @@ namespace TheTear.UI
     public class JournalController : MonoBehaviour
     {
         public GameObject panelRoot;
+        public Component titleText;
         public Component clusterText;
         public Component clueListText;
         public Button closeButton;
         public Button unlockButton;
         public Button deductionButton;
+        public ToastController toast;
 
         private ClueManager clueManager;
         private DeductionController deduction;
@@ -24,10 +26,11 @@ namespace TheTear.UI
             if (deductionButton != null) deductionButton.onClick.AddListener(OpenDeduction);
         }
 
-        public void Initialize(ClueManager manager, DeductionController deductionController)
+        public void Initialize(ClueManager manager, DeductionController deductionController, ToastController toastController = null)
         {
             clueManager = manager;
             deduction = deductionController;
+            toast = toastController;
             Refresh();
             Hide();
         }
@@ -61,13 +64,36 @@ namespace TheTear.UI
                 return;
             }
 
+            StoryModel story = clueManager.Story;
+            if (story != null && titleText != null)
+            {
+                string caseTitle = !string.IsNullOrEmpty(story.caseTitle) ? story.caseTitle : story.title;
+                if (!string.IsNullOrEmpty(caseTitle))
+                {
+                    UITextHelper.SetText(titleText, caseTitle);
+                }
+            }
+
             StringBuilder clusters = new StringBuilder();
             foreach (var cluster in clueManager.GetClusters())
             {
                 int unlockedCount = clueManager.GetClusterUnlockedCount(cluster.id);
                 int total = clueManager.GetClusterTotalCount(cluster.id);
-                clusters.Append(cluster.name).Append(" [").Append(cluster.id).Append("] ")
+                string clusterTitle = !string.IsNullOrEmpty(cluster.title) ? cluster.title : cluster.name;
+                clusters.Append(clusterTitle).Append(" [").Append(cluster.id).Append("] ")
                     .Append(unlockedCount).Append("/").Append(total).Append("\n");
+
+                if (!string.IsNullOrEmpty(cluster.description))
+                {
+                    clusters.Append(cluster.description).Append("\n");
+                }
+
+                if (total > 0 && unlockedCount == total && !string.IsNullOrEmpty(cluster.completionText))
+                {
+                    clusters.Append(cluster.completionText).Append("\n");
+                }
+
+                clusters.Append("\n");
             }
             UITextHelper.SetText(clusterText, clusters.ToString().TrimEnd());
 
@@ -75,7 +101,13 @@ namespace TheTear.UI
             foreach (var clue in clueManager.GetAllClues())
             {
                 string status = clueManager.IsUnlocked(clue.id) ? "[x]" : (clueManager.IsEligible(clue.id) ? "[>]" : "[ ]");
-                list.Append(status).Append(" ").Append(clue.id).Append(" ").Append(clue.title).Append("\n");
+                list.Append(status).Append(" ").Append(clue.id).Append(" ").Append(clue.title);
+                string description = !string.IsNullOrEmpty(clue.description) ? clue.description : clue.summary;
+                if (!string.IsNullOrEmpty(description))
+                {
+                    list.Append(" - ").Append(description);
+                }
+                list.Append("\n");
             }
             UITextHelper.SetText(clueListText, list.ToString().TrimEnd());
 
@@ -83,13 +115,22 @@ namespace TheTear.UI
             {
                 deductionButton.interactable = clueManager.IsDeductionAvailable;
             }
+
+            if (unlockButton != null)
+            {
+                unlockButton.interactable = clueManager.EligibleCount > 0;
+            }
         }
 
         private void UnlockEligible()
         {
             if (clueManager != null)
             {
-                clueManager.UnlockFirstEligibleFromJournal();
+                bool unlockedAny = clueManager.UnlockFirstEligibleFromJournal();
+                if (!unlockedAny && toast != null)
+                {
+                    toast.Show("No eligible clues.");
+                }
                 Refresh();
             }
         }

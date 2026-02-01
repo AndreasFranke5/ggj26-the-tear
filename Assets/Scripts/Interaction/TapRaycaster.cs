@@ -1,8 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-#endif
 
 namespace TheTear.Interaction
 {
@@ -58,9 +55,9 @@ namespace TheTear.Interaction
         private bool TryGetTap(out Vector2 screenPos, out int pointerId)
         {
 #if ENABLE_INPUT_SYSTEM
-            if (Touchscreen.current != null)
+            if (UnityEngine.InputSystem.Touchscreen.current != null)
             {
-                var touch = Touchscreen.current.primaryTouch;
+                var touch = UnityEngine.InputSystem.Touchscreen.current.primaryTouch;
                 if (touch.press.wasPressedThisFrame)
                 {
                     screenPos = touch.position.ReadValue();
@@ -69,9 +66,9 @@ namespace TheTear.Interaction
                 }
             }
 
-            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+            if (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame)
             {
-                screenPos = Mouse.current.position.ReadValue();
+                screenPos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
                 pointerId = -1;
                 return true;
             }
@@ -79,7 +76,7 @@ namespace TheTear.Interaction
 
             if (Input.touchCount > 0)
             {
-                Touch touch = Input.GetTouch(0);
+                UnityEngine.Touch touch = Input.GetTouch(0);
                 if (touch.phase == UnityEngine.TouchPhase.Began)
                 {
                     screenPos = touch.position;

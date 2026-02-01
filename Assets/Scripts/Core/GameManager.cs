@@ -30,6 +30,7 @@ namespace TheTear.Core
         private StoryModel story;
         private bool trackingOk = true;
         private Coroutine trackingRoutine;
+        private bool introShown;
 
         private void Awake()
         {
@@ -74,12 +75,14 @@ namespace TheTear.Core
             {
                 clueManager.Initialize(story, sceneRoot);
                 clueManager.OnClueUnlocked += HandleClueUnlocked;
+                clueManager.OnClueUnlockBlocked += HandleClueUnlockBlocked;
+                clueManager.OnClusterCompleted += HandleClusterCompleted;
                 clueManager.OnDeductionAvailabilityChanged += HandleDeductionAvailability;
             }
 
             if (journal != null)
             {
-                journal.Initialize(clueManager, deduction);
+                journal.Initialize(clueManager, deduction, toast);
             }
 
             if (pauseMenu != null)
@@ -106,12 +109,16 @@ namespace TheTear.Core
                 hud.OnDeductionPressed += () => deduction?.Show();
             }
 
+            if (characterController != null)
+            {
+                characterController.OnModeChanged += HandleModeChanged;
+            }
+
             if (arPlacement != null)
             {
                 arPlacement.OnPlaced += HandlePlaced;
                 arPlacement.OnRelocate += HandleRelocate;
                 arPlacement.OnTrackingStateChanged += HandleTrackingChanged;
-                arPlacement.OnFallbackPlaced += HandleFallbackPlaced;
                 arPlacement.BeginPlacement();
             }
 
@@ -122,7 +129,16 @@ namespace TheTear.Core
 
             if (hud != null)
             {
-                hud.SetObjective("Tap a detected plane to place the investigation bubble. If none appear, tap to place in front.");
+                hud.SetObjective("Scan for a plane, then tap to place the investigation bubble.");
+                if (characterController != null)
+                {
+                    hud.SetMode(characterController.CurrentMode);
+                }
+            }
+
+            if (characterController != null)
+            {
+                ApplyInteractionMask(characterController.CurrentMode);
             }
 
             CheckLayers();
@@ -140,6 +156,10 @@ namespace TheTear.Core
             if (hud != null)
             {
                 hud.SetVoidFlowInteractable(ok);
+                if (characterController != null)
+                {
+                    hud.SetMode(characterController.CurrentMode);
+                }
             }
 
             if (!ok && errorPanel != null)
@@ -151,14 +171,20 @@ namespace TheTear.Core
         private void HandlePlaced()
         {
             state = AppState.Investigating;
-            if (tapRaycaster != null)
-            {
-                tapRaycaster.enabled = true;
-            }
 
             if (clueManager != null)
             {
                 clueManager.SpawnClues();
+            }
+
+            if (!ValidateEvidence())
+            {
+                return;
+            }
+
+            if (tapRaycaster != null)
+            {
+                tapRaycaster.enabled = true;
             }
 
             if (hud != null)
@@ -169,6 +195,15 @@ namespace TheTear.Core
             if (toast != null)
             {
                 toast.Show("Anchor placed. Tap evidence to unlock clues.");
+            }
+
+            if (!introShown && story != null && !string.IsNullOrEmpty(story.introText))
+            {
+                introShown = true;
+                if (toast != null)
+                {
+                    toast.Show(story.introText, 5f);
+                }
             }
         }
 
@@ -208,19 +243,19 @@ namespace TheTear.Core
             }
         }
 
-        private void HandleFallbackPlaced()
-        {
-            if (toast != null)
-            {
-                toast.Show("No plane detected. Placed bubble in front of camera.");
-            }
-        }
-
         private void HandleClueUnlocked(ClueData clue)
         {
             if (toast != null)
             {
-                toast.Show("Clue unlocked: " + clue.title);
+                string description = !string.IsNullOrEmpty(clue.description) ? clue.description : clue.summary;
+                if (!string.IsNullOrEmpty(description))
+                {
+                    toast.Show(clue.title + " - " + description);
+                }
+                else
+                {
+                    toast.Show("Clue unlocked: " + clue.title);
+                }
             }
             if (telemetry != null)
             {
@@ -233,6 +268,35 @@ namespace TheTear.Core
             if (pauseMenu != null)
             {
                 pauseMenu.Refresh();
+            }
+        }
+
+        private void HandleClueUnlockBlocked(ClueData clue)
+        {
+            if (toast != null)
+            {
+                toast.Show("Something is missing.");
+            }
+        }
+
+        private void HandleClusterCompleted(ClusterData cluster)
+        {
+            if (toast == null || cluster == null)
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(cluster.completionText))
+            {
+                toast.Show(cluster.completionText, 4f);
+            }
+            else
+            {
+                string title = !string.IsNullOrEmpty(cluster.title) ? cluster.title : cluster.name;
+                if (!string.IsNullOrEmpty(title))
+                {
+                    toast.Show("Cluster complete: " + title, 3f);
+                }
             }
         }
 
@@ -312,6 +376,119 @@ namespace TheTear.Core
             if (hud != null)
             {
                 hud.SetObjective("Fix story data errors to proceed.");
+            }
+        }
+
+        private void HandleModeChanged(CharacterMode mode)
+        {
+            if (hud != null)
+            {
+                hud.SetMode(mode);
+            }
+
+            ApplyInteractionMask(mode);
+        }
+
+        private void ApplyInteractionMask(CharacterMode mode)
+        {
+            if (tapRaycaster == null)
+            {
+                return;
+            }
+
+            int defaultLayer = LayerMask.NameToLayer("Default");
+            int voidLayer = LayerMask.NameToLayer("Void");
+            int flowLayer = LayerMask.NameToLayer("Flow");
+
+            int mask = defaultLayer >= 0 ? (1 << defaultLayer) : 0;
+            if (mode == CharacterMode.Void && voidLayer >= 0)
+            {
+                mask |= 1 << voidLayer;
+            }
+            if (mode == CharacterMode.Flow && flowLayer >= 0)
+            {
+                mask |= 1 << flowLayer;
+            }
+
+            tapRaycaster.interactionMask = mask;
+        }
+
+        private bool ValidateEvidence()
+        {
+            if (sceneRoot == null)
+            {
+                return true;
+            }
+
+            List<string> issues = new List<string>();
+            Transform cameraTransform = arPlacement != null && arPlacement.arCamera != null ? arPlacement.arCamera.transform : null;
+
+            if (cameraTransform != null && sceneRoot.transform.IsChildOf(cameraTransform))
+            {
+                issues.Add("SceneRoot is parented under the AR Camera. Move it under XROrigin instead.");
+            }
+
+            foreach (Transform child in sceneRoot.transform)
+            {
+                ValidateEvidenceRoot(child, cameraTransform, issues);
+            }
+
+            if (issues.Count == 0)
+            {
+                return true;
+            }
+
+            foreach (var issue in issues)
+            {
+                Debug.LogError(issue);
+            }
+
+            state = AppState.Error;
+            if (tapRaycaster != null)
+            {
+                tapRaycaster.enabled = false;
+            }
+            if (errorPanel != null)
+            {
+                errorPanel.ShowErrors(issues, false);
+            }
+            if (hud != null)
+            {
+                hud.SetObjective("Evidence configuration error. Fix and restart.");
+            }
+            return false;
+        }
+
+        private void ValidateEvidenceRoot(Transform root, Transform cameraTransform, List<string> issues)
+        {
+            if (root == null)
+            {
+                return;
+            }
+
+            if (root.GetComponentInChildren<RectTransform>(true) != null)
+            {
+                issues.Add("Evidence '" + root.name + "' includes UI RectTransform components.");
+            }
+
+            if (root.GetComponentInParent<Canvas>() != null)
+            {
+                issues.Add("Evidence '" + root.name + "' is parented under a Canvas.");
+            }
+
+            if (cameraTransform != null && root.IsChildOf(cameraTransform))
+            {
+                issues.Add("Evidence '" + root.name + "' is parented under the AR Camera.");
+            }
+
+            if (root.GetComponentInChildren<Collider>(true) == null)
+            {
+                issues.Add("Evidence '" + root.name + "' has no Collider.");
+            }
+
+            if (root.GetComponentInChildren<Renderer>(true) == null)
+            {
+                issues.Add("Evidence '" + root.name + "' has no Renderer.");
             }
         }
     }

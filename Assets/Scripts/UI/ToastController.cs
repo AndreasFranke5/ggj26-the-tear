@@ -15,6 +15,11 @@ namespace TheTear.UI
             {
                 canvasGroup = GetComponent<CanvasGroup>();
             }
+            if (canvasGroup != null)
+            {
+                canvasGroup.blocksRaycasts = false;
+                canvasGroup.interactable = false;
+            }
         }
 
         public void Show(string message, float duration = -1f)

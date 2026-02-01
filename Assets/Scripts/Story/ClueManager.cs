@@ -10,11 +10,16 @@ namespace TheTear.Story
     public class ClueManager : MonoBehaviour
     {
         public event Action<ClueData> OnClueUnlocked;
+        public event Action<ClueData> OnClueUnlockBlocked;
+        public event Action<ClusterData> OnClusterCompleted;
         public event Action<bool> OnDeductionAvailabilityChanged;
 
         public StoryModel Story => story;
         public bool IsDeductionAvailable => deductionAvailable;
         public bool HasSpawned => spawned;
+        public int EligibleCount => eligible.Count;
+
+        public PrefabLibrary prefabLibrary;
 
         private StoryModel story;
         private SceneRootController sceneRoot;
@@ -25,6 +30,8 @@ namespace TheTear.Story
         private readonly HashSet<string> unlocked = new HashSet<string>();
         private readonly HashSet<string> revealed = new HashSet<string>();
         private readonly HashSet<string> eligible = new HashSet<string>();
+        private readonly HashSet<string> completedClusters = new HashSet<string>();
+        private readonly Dictionary<GameObject, Coroutine> pulseRoutines = new Dictionary<GameObject, Coroutine>();
         private bool spawned;
         private bool deductionAvailable;
 
@@ -36,10 +43,12 @@ namespace TheTear.Story
             unlocked.Clear();
             revealed.Clear();
             eligible.Clear();
+            completedClusters.Clear();
             clueMap.Clear();
             objectDataMap.Clear();
             objectToClue.Clear();
             objectInstances.Clear();
+            pulseRoutines.Clear();
 
             if (story != null && story.clues != null)
             {
@@ -83,9 +92,13 @@ namespace TheTear.Story
             sceneRoot.SetActive(true);
             spawned = true;
 
+            var placedPositions = new List<Vector3>();
             foreach (var obj in story.objects)
             {
-                GameObject go = ClueFactory.Create(obj, sceneRoot.transform);
+                obj.localPosition = ApplySpacing(obj.localPosition, placedPositions);
+                placedPositions.Add(obj.localPosition);
+
+                GameObject go = ClueFactory.Create(obj, sceneRoot.transform, prefabLibrary);
                 objectInstances[obj.id] = go;
                 bool visible = revealed.Contains(obj.id);
                 go.SetActive(visible);
@@ -129,13 +142,17 @@ namespace TheTear.Story
 
         public bool TryUnlockClue(string clueId, string source)
         {
-            if (!IsEligible(clueId))
+            if (!clueMap.TryGetValue(clueId, out ClueData clue))
             {
                 return false;
             }
 
-            if (!clueMap.TryGetValue(clueId, out ClueData clue))
+            if (!IsEligible(clueId))
             {
+                if (source == "tap")
+                {
+                    OnClueUnlockBlocked?.Invoke(clue);
+                }
                 return false;
             }
 
@@ -149,20 +166,28 @@ namespace TheTear.Story
                     if (objectInstances.TryGetValue(revealId, out GameObject revealObj))
                     {
                         revealObj.SetActive(true);
+                        PulseObject(revealObj);
                     }
                 }
             }
 
             RecomputeState();
             OnClueUnlocked?.Invoke(clue);
+            CheckClusterCompletion();
+            PulseClueObject(clue.objectId);
             return true;
         }
 
         public bool UnlockFirstEligibleFromJournal()
         {
-            foreach (var clueId in eligible)
+            if (story == null || story.clues == null)
             {
-                if (TryUnlockClue(clueId, "journal"))
+                return false;
+            }
+
+            foreach (var clue in story.clues)
+            {
+                if (IsEligible(clue.id) && TryUnlockClue(clue.id, "journal"))
                 {
                     return true;
                 }
@@ -240,6 +265,154 @@ namespace TheTear.Story
             {
                 OnDeductionAvailabilityChanged?.Invoke(deductionAvailable);
             }
+        }
+
+        private void CheckClusterCompletion()
+        {
+            if (story == null || story.clusters == null)
+            {
+                return;
+            }
+
+            foreach (var cluster in story.clusters)
+            {
+                if (cluster == null || string.IsNullOrEmpty(cluster.id) || completedClusters.Contains(cluster.id))
+                {
+                    continue;
+                }
+
+                if (cluster.clueIds == null || cluster.clueIds.Length == 0)
+                {
+                    continue;
+                }
+
+                bool complete = true;
+                foreach (var clueId in cluster.clueIds)
+                {
+                    if (!unlocked.Contains(clueId))
+                    {
+                        complete = false;
+                        break;
+                    }
+                }
+
+                if (complete)
+                {
+                    completedClusters.Add(cluster.id);
+                    OnClusterCompleted?.Invoke(cluster);
+                }
+            }
+        }
+
+        public void PulseClueObject(string objectId)
+        {
+            if (string.IsNullOrEmpty(objectId))
+            {
+                return;
+            }
+
+            if (objectInstances.TryGetValue(objectId, out GameObject target))
+            {
+                PulseObject(target);
+            }
+        }
+
+        private void PulseObject(GameObject target)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+            if (pulseRoutines.TryGetValue(target, out Coroutine routine) && routine != null)
+            {
+                StopCoroutine(routine);
+            }
+
+            pulseRoutines[target] = StartCoroutine(PulseRoutine(target.transform));
+        }
+
+        private System.Collections.IEnumerator PulseRoutine(Transform target)
+        {
+            if (target == null)
+            {
+                yield break;
+            }
+
+            Vector3 startScale = target.localScale;
+            Vector3 peakScale = startScale * 1.18f;
+            const float upDuration = 0.15f;
+            const float downDuration = 0.2f;
+
+            float t = 0f;
+            while (t < upDuration)
+            {
+                t += Time.unscaledDeltaTime;
+                float lerp = Mathf.Clamp01(t / upDuration);
+                target.localScale = Vector3.Lerp(startScale, peakScale, lerp);
+                yield return null;
+            }
+
+            t = 0f;
+            while (t < downDuration)
+            {
+                t += Time.unscaledDeltaTime;
+                float lerp = Mathf.Clamp01(t / downDuration);
+                target.localScale = Vector3.Lerp(peakScale, startScale, lerp);
+                yield return null;
+            }
+
+            target.localScale = startScale;
+        }
+
+        private Vector3 ApplySpacing(Vector3 localPosition, List<Vector3> existingPositions)
+        {
+            const float minSpacing = 0.15f;
+            const float maxRadius = 2f;
+
+            Vector3 adjusted = ClampToRadius(localPosition, maxRadius);
+
+            if (existingPositions == null || existingPositions.Count == 0)
+            {
+                return adjusted;
+            }
+
+            for (int i = 0; i < existingPositions.Count; i++)
+            {
+                float dist = Vector3.Distance(adjusted, existingPositions[i]);
+                if (dist >= minSpacing)
+                {
+                    continue;
+                }
+
+                Vector3 radial = new Vector3(adjusted.x, 0f, adjusted.z);
+                if (radial.sqrMagnitude < 0.0001f)
+                {
+                    radial = new Vector3(existingPositions[i].x, 0f, existingPositions[i].z);
+                }
+                if (radial.sqrMagnitude < 0.0001f)
+                {
+                    radial = Vector3.forward;
+                }
+
+                Vector3 push = radial.normalized * (minSpacing - dist);
+                adjusted += new Vector3(push.x, 0f, push.z);
+            }
+
+            return ClampToRadius(adjusted, maxRadius);
+        }
+
+        private Vector3 ClampToRadius(Vector3 localPosition, float maxRadius)
+        {
+            Vector3 radial = new Vector3(localPosition.x, 0f, localPosition.z);
+            float radius = radial.magnitude;
+            if (radius <= maxRadius || radius <= 0.0001f)
+            {
+                return localPosition;
+            }
+
+            Vector3 clamped = radial.normalized * maxRadius;
+            return new Vector3(clamped.x, localPosition.y, clamped.z);
         }
 
         private bool ComputeDeductionAvailable()
