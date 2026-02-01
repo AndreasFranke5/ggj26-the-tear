@@ -16,6 +16,8 @@ namespace TheTear.Story
         public string[] methods;
         public string[] motives;
         public string[] essentials;
+        public string winText;
+        public string failText;
         public ClusterData[] clusters;
         public StoryObjectData[] objects;
         public ClueData[] clues;

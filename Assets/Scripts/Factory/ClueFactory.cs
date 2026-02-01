@@ -6,6 +6,9 @@ namespace TheTear.Factory
 {
     public static class ClueFactory
     {
+        // Minimum collider size in meters for reliable mobile tapping
+        private const float MinColliderSize = 0.05f;
+
         public static GameObject Create(StoryObjectData data, Transform parent, PrefabLibrary prefabLibrary = null)
         {
             ClueRecipe recipe = ParseRecipe(data.recipe);
@@ -33,6 +36,7 @@ namespace TheTear.Factory
             }
 
             EnsureCollider(root);
+            AssertNoRectTransform(root);
             return root;
         }
 
@@ -346,6 +350,11 @@ namespace TheTear.Factory
             var existing = root.GetComponentsInChildren<Collider>(true);
             if (existing != null && existing.Length > 0)
             {
+                // Ensure existing colliders meet minimum size
+                foreach (var collider in existing)
+                {
+                    EnforceMinimumColliderSize(collider);
+                }
                 return;
             }
 
@@ -353,7 +362,7 @@ namespace TheTear.Factory
             var box = root.AddComponent<BoxCollider>();
             if (renderers == null || renderers.Length == 0)
             {
-                box.size = Vector3.one * 0.1f;
+                box.size = Vector3.one * MinColliderSize;
                 box.center = Vector3.zero;
                 return;
             }
@@ -372,8 +381,49 @@ namespace TheTear.Factory
                 SafeDivide(size.y, lossyScale.y),
                 SafeDivide(size.z, lossyScale.z));
 
+            // Enforce minimum size for reliable tapping
+            size = new Vector3(
+                Mathf.Max(size.x, MinColliderSize),
+                Mathf.Max(size.y, MinColliderSize),
+                Mathf.Max(size.z, MinColliderSize));
+
             box.center = center;
             box.size = size;
+        }
+
+        private static void EnforceMinimumColliderSize(Collider collider)
+        {
+            if (collider is BoxCollider box)
+            {
+                box.size = new Vector3(
+                    Mathf.Max(box.size.x, MinColliderSize),
+                    Mathf.Max(box.size.y, MinColliderSize),
+                    Mathf.Max(box.size.z, MinColliderSize));
+            }
+            else if (collider is SphereCollider sphere)
+            {
+                sphere.radius = Mathf.Max(sphere.radius, MinColliderSize * 0.5f);
+            }
+            else if (collider is CapsuleCollider capsule)
+            {
+                capsule.radius = Mathf.Max(capsule.radius, MinColliderSize * 0.5f);
+                capsule.height = Mathf.Max(capsule.height, MinColliderSize);
+            }
+            // MeshCollider and other types are left as-is
+        }
+
+        private static void AssertNoRectTransform(GameObject root)
+        {
+            if (root == null)
+            {
+                return;
+            }
+
+            var rectTransforms = root.GetComponentsInChildren<RectTransform>(true);
+            if (rectTransforms != null && rectTransforms.Length > 0)
+            {
+                Debug.LogError($"[ClueFactory] INVARIANT VIOLATION: Evidence object '{root.name}' contains RectTransform! Evidence must be world-space 3D objects, not UI.");
+            }
         }
 
         private static float SafeDivide(float value, float divisor)

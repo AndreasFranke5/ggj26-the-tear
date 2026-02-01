@@ -141,7 +141,9 @@ namespace TheTear.UI
             string motive = GetOption(story.motives, motiveIndex);
 
             bool success = culprit == story.solution.culprit && method == story.solution.method && motive == story.solution.motive;
-            UITextHelper.SetText(resultText, success ? "Correct! Case solved." : "Incorrect. Re-evaluate the evidence.");
+            string winMessage = !string.IsNullOrEmpty(story.winText) ? story.winText : "Correct! Case solved.";
+            string failMessage = !string.IsNullOrEmpty(story.failText) ? story.failText : "Incorrect. Re-evaluate the evidence.";
+            UITextHelper.SetText(resultText, success ? winMessage : failMessage);
 
             if (telemetry != null)
             {

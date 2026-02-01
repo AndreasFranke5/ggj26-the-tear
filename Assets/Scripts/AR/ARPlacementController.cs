@@ -6,6 +6,15 @@ using UnityEngine.XR.ARSubsystems;
 
 namespace TheTear.AR
 {
+    /// <summary>
+    /// Handles AR plane detection and placement of the SceneRoot anchor.
+    ///
+    /// INVARIANTS:
+    /// - SceneRoot must be parented to XROrigin (NOT ARCamera/CameraOffset)
+    /// - Uses ARRaycastManager.Raycast ONLY for plane detection (TrackableType.PlaneWithinPolygon)
+    /// - Never reparents evidence during tracking loss
+    /// - Relocate preserves clue progress (only moves SceneRoot position, does not reinitialize)
+    /// </summary>
     public class ARPlacementController : MonoBehaviour
     {
         public ARRaycastManager raycastManager;
@@ -73,6 +82,12 @@ namespace TheTear.AR
                 return;
             }
 
+            // Validate SceneRoot hierarchy before first placement
+            if (!hasPlaced)
+            {
+                ValidateSceneRootHierarchy();
+            }
+
             if (!sceneRoot.gameObject.activeSelf)
             {
                 sceneRoot.SetActive(true);
@@ -93,7 +108,32 @@ namespace TheTear.AR
             }
             else
             {
+                // Relocate only moves position, does not wipe clue progress
                 OnRelocate?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// Validates that SceneRoot is correctly parented for world-space anchoring.
+        /// Logs errors if SceneRoot is incorrectly parented under camera hierarchy.
+        /// </summary>
+        private void ValidateSceneRootHierarchy()
+        {
+            if (sceneRoot == null)
+            {
+                return;
+            }
+
+            // Use SceneRootController's validation if available
+            if (!sceneRoot.ValidateHierarchy())
+            {
+                Debug.LogError("[ARPlacementController] SceneRoot hierarchy validation failed. Evidence may not be world-anchored correctly.");
+            }
+
+            // Additional check: SceneRoot must not be a child of arCamera
+            if (arCamera != null && sceneRoot.transform.IsChildOf(arCamera.transform))
+            {
+                Debug.LogError("[ARPlacementController] CRITICAL: SceneRoot is parented under ARCamera. Evidence will follow the camera instead of staying world-anchored. Move SceneRoot to be a child of XROrigin.");
             }
         }
 

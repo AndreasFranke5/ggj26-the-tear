@@ -25,6 +25,8 @@
     "retaliation over credit for the demo"
   ],
   "essentials": ["C05", "C07"],
+  "winText": "Case solved. Jonas tampered with the charging dock using a conductive pad to cover up the unauthorized module swap before the demo.",
+  "failText": "Incorrect deduction. Re-examine the evidence trail from the lab.",
   "clusters": [
     {
       "id": "A",
