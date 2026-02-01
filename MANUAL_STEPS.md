@@ -32,16 +32,17 @@
 - Enable Developer Options + USB Debugging on the phone.
 - Plug in via USB and accept the RSA prompt on the device.
 - In Unity: File > Build Settings > Android > Build And Run.
-- Keep “Development Build” enabled for faster iteration.
+- Keep "Development Build" enabled for faster iteration.
 - Unity installs and launches directly on the phone each time.
 - Use Window > Analysis > Android Logcat to view device logs.
+- If adb is not found, add <SDK>/platform-tools to PATH (Unity Preferences > External Tools).
 
 8) Editor testing (no phone):
 - Switch platform to PC/Mac/Linux Standalone.
-- Edit > Project Settings > XR Plug‑in Management > Standalone: enable XR Simulation.
+- Edit > Project Settings > XR Plug-in Management > Standalone: enable XR Simulation.
 - Press Play and use the XR Simulation controls to move the camera.
 
-7) Upgrading clue visuals to real 3D objects:
+9) Upgrading clue visuals to real 3D objects:
 - Import meshes into `Assets/Art/` (or any folder).
 - Open `Assets/Scripts/Factory/ClueFactory.cs`.
 - Replace the primitive builders (`CreateLanyard`, `CreateDock`, etc.) with mesh-based versions:
@@ -49,3 +50,7 @@
   - Add `MeshRenderer` and assign a material.
   - Add a collider so taps still work.
 - Run Jam > Generate Scene again and test on device.
+
+10) Troubleshooting:
+- PowerToys Monaco Preview can crash Unity builds; disable the Preview Pane or the Monaco plugin.
+- UDP port warnings from Visual Studio are safe to ignore.

@@ -35,4 +35,4 @@ To turn the placeholder primitives into detailed 3D props:
 4) Ensure Active Input Handling is correct
 5) Jam/Generate Scene
 6) Play
-7) Build APK
+7) Build & Run to device
