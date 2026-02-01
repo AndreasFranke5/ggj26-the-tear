@@ -19,13 +19,14 @@ namespace TheTear.AR
     {
         public ARRaycastManager raycastManager;
         public ARPlaneManager planeManager;
+        public ARAnchorManager anchorManager;
         public Camera arCamera;
         public SceneRootController sceneRoot;
         public Transform reticle;
 
         public bool IsPlacementActive => placementActive;
 
-        public event Action OnPlaced;
+        public event Action<Transform> OnPlaced;
         public event Action OnRelocate;
         public event Action<bool> OnTrackingStateChanged;
         public event Action OnFallbackPlaced;
@@ -33,6 +34,8 @@ namespace TheTear.AR
         private static readonly List<ARRaycastHit> Hits = new List<ARRaycastHit>();
         private bool placementActive = true;
         private bool hasPlaced = false;
+        private ARAnchor currentAnchor;
+        private bool anchorOnSceneRoot;
 
         private void OnEnable()
         {
@@ -61,7 +64,7 @@ namespace TheTear.AR
             if (raycastManager.Raycast(screenPos, Hits, TrackableType.PlaneWithinPolygon))
             {
                 Pose pose = AlignPoseToCameraYaw(Hits[0].pose);
-                PlaceAtPose(pose);
+                PlaceAtPose(pose, Hits[0]);
             }
         }
 
@@ -75,7 +78,7 @@ namespace TheTear.AR
             }
         }
 
-        private void PlaceAtPose(Pose pose)
+        private void PlaceAtPose(Pose pose, ARRaycastHit hit)
         {
             if (sceneRoot == null)
             {
@@ -93,7 +96,10 @@ namespace TheTear.AR
                 sceneRoot.SetActive(true);
             }
 
-            sceneRoot.transform.SetPositionAndRotation(pose.position, pose.rotation);
+            if (!TryCreateAnchor(pose, hit))
+            {
+                sceneRoot.transform.SetPositionAndRotation(pose.position, pose.rotation);
+            }
             placementActive = false;
             SetPlaneVisualization(false);
             if (reticle != null)
@@ -104,7 +110,7 @@ namespace TheTear.AR
             if (!hasPlaced)
             {
                 hasPlaced = true;
-                OnPlaced?.Invoke();
+                OnPlaced?.Invoke(sceneRoot.transform);
             }
             else
             {
@@ -239,6 +245,78 @@ namespace TheTear.AR
             {
                 plane.gameObject.SetActive(active);
             }
+        }
+
+        private bool TryCreateAnchor(Pose pose, ARRaycastHit hit)
+        {
+            ClearAnchorIfNeeded();
+
+            if (anchorManager != null)
+            {
+                ARAnchor anchor = null;
+                if (planeManager != null)
+                {
+                    ARPlane plane = planeManager.GetPlane(hit.trackableId);
+                    if (plane != null)
+                    {
+                        anchor = anchorManager.AttachAnchor(plane, pose);
+                    }
+                }
+
+                if (anchor != null)
+                {
+                    currentAnchor = anchor;
+                    anchorOnSceneRoot = false;
+                    sceneRoot.transform.SetParent(anchor.transform, false);
+                    sceneRoot.transform.localPosition = Vector3.zero;
+                    sceneRoot.transform.localRotation = Quaternion.identity;
+                    return true;
+                }
+            }
+
+            sceneRoot.transform.SetPositionAndRotation(pose.position, pose.rotation);
+
+            var anchorComponent = sceneRoot.GetComponent<ARAnchor>();
+            if (anchorComponent == null)
+            {
+                anchorComponent = sceneRoot.gameObject.AddComponent<ARAnchor>();
+            }
+            if (anchorComponent != null)
+            {
+                currentAnchor = anchorComponent;
+                anchorOnSceneRoot = true;
+                sceneRoot.transform.SetPositionAndRotation(pose.position, pose.rotation);
+                return true;
+            }
+
+            currentAnchor = null;
+            anchorOnSceneRoot = false;
+            return false;
+        }
+
+        private void ClearAnchorIfNeeded()
+        {
+            if (currentAnchor == null)
+            {
+                return;
+            }
+
+            if (anchorOnSceneRoot)
+            {
+                Destroy(currentAnchor);
+            }
+            else if (currentAnchor != null)
+            {
+                Transform anchorParent = currentAnchor.transform.parent;
+                if (sceneRoot != null && sceneRoot.transform.IsChildOf(currentAnchor.transform))
+                {
+                    sceneRoot.transform.SetParent(anchorParent, true);
+                }
+                Destroy(currentAnchor.gameObject);
+            }
+
+            currentAnchor = null;
+            anchorOnSceneRoot = false;
         }
     }
 }

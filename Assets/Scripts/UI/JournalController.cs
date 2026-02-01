@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,12 +16,19 @@ namespace TheTear.UI
         public Button unlockButton;
         public Button deductionButton;
         public ToastController toast;
+        public float unlockCooldownSeconds = 0.6f;
 
         private ClueManager clueManager;
         private DeductionController deduction;
+        private float nextUnlockTime;
+        private Coroutine unlockCooldownRoutine;
 
         private void Awake()
         {
+            if (unlockCooldownSeconds <= 0f)
+            {
+                unlockCooldownSeconds = 0.6f;
+            }
             if (closeButton != null) closeButton.onClick.AddListener(Hide);
             if (unlockButton != null) unlockButton.onClick.AddListener(UnlockEligible);
             if (deductionButton != null) deductionButton.onClick.AddListener(OpenDeduction);
@@ -75,6 +83,10 @@ namespace TheTear.UI
             }
 
             StringBuilder clusters = new StringBuilder();
+            if (story != null && !string.IsNullOrEmpty(story.introText))
+            {
+                clusters.Append(story.introText).Append("\n\n");
+            }
             foreach (var cluster in clueManager.GetClusters())
             {
                 int unlockedCount = clueManager.GetClusterUnlockedCount(cluster.id);
@@ -118,7 +130,7 @@ namespace TheTear.UI
 
             if (unlockButton != null)
             {
-                unlockButton.interactable = clueManager.EligibleCount > 0;
+                unlockButton.interactable = clueManager.EligibleCount > 0 && Time.unscaledTime >= nextUnlockTime;
             }
         }
 
@@ -126,13 +138,34 @@ namespace TheTear.UI
         {
             if (clueManager != null)
             {
+                if (Time.unscaledTime < nextUnlockTime)
+                {
+                    return;
+                }
+
                 bool unlockedAny = clueManager.UnlockFirstEligibleFromJournal();
+                nextUnlockTime = Time.unscaledTime + Mathf.Max(0f, unlockCooldownSeconds);
+                if (unlockCooldownRoutine != null)
+                {
+                    StopCoroutine(unlockCooldownRoutine);
+                }
+                unlockCooldownRoutine = StartCoroutine(UnlockCooldownRoutine());
                 if (!unlockedAny && toast != null)
                 {
                     toast.Show("No eligible clues.");
                 }
                 Refresh();
             }
+        }
+
+        private IEnumerator UnlockCooldownRoutine()
+        {
+            float wait = nextUnlockTime - Time.unscaledTime;
+            if (wait > 0f)
+            {
+                yield return new WaitForSecondsRealtime(wait);
+            }
+            Refresh();
         }
 
         private void OpenDeduction()

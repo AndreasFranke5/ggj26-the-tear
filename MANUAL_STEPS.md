@@ -61,7 +61,9 @@ The game works with procedural primitives by default. To add custom art:
 
 - Import meshes into `Assets/Art/` (any folder)
 - Create prefabs with colliders (minimum 0.05m for tappability)
-- Register them in `Assets/Art/PrefabLibrary.asset`
+- Register them in `Assets/Art/PrefabLibrary.asset`:
+  - Add an entry where **key** = `objectId` (preferred) or `recipe` from `case.json`
+  - Prefab must be a **world-space 3D object** (Transform + MeshRenderer + Collider)
 - See `ART_PIPELINE.md` for the full workflow
 
 The procedural fallback is automatic - unregistered clues use colored primitives.

@@ -36,19 +36,26 @@ namespace TheTear.Editor
 
             // AR foundation objects
             GameObject arSessionGo = new GameObject("ARSession", typeof(ARSession));
-            GameObject arManagersGo = new GameObject("ARManagers", typeof(ARRaycastManager), typeof(ARPlaneManager));
+            GameObject arManagersGo = null;
             GameObject arCameraGo = new GameObject("ARCamera", typeof(Camera), typeof(AudioListener), typeof(ARCameraManager), typeof(ARCameraBackground));
             arCameraGo.tag = "MainCamera";
 
             GameObject xrOriginGo = TryCreateXROrigin(out GameObject cameraOffset);
             if (xrOriginGo != null && cameraOffset != null)
             {
+                arManagersGo = xrOriginGo;
+                EnsureComponent<ARRaycastManager>(arManagersGo);
+                EnsureComponent<ARPlaneManager>(arManagersGo);
+                EnsureComponent<ARAnchorManager>(arManagersGo);
                 arCameraGo.transform.SetParent(cameraOffset.transform, false);
-                arManagersGo.transform.SetParent(xrOriginGo.transform, false);
                 ConfigureXROriginCamera(xrOriginGo, arCameraGo, cameraOffset);
             }
+            else
+            {
+                arManagersGo = new GameObject("ARManagers", typeof(ARRaycastManager), typeof(ARPlaneManager), typeof(ARAnchorManager));
+            }
 
-            TryAddComponent(arCameraGo, "UnityEngine.XR.ARFoundation.ARPoseDriver, Unity.XR.ARFoundation");
+            EnsureCameraPoseDriver(arCameraGo);
 
             // Scene root
             GameObject sceneRootGo = new GameObject("SceneRoot", typeof(SceneRootController));
@@ -241,6 +248,7 @@ namespace TheTear.Editor
             // Wire references
             placement.raycastManager = arManagersGo.GetComponent<ARRaycastManager>();
             placement.planeManager = arManagersGo.GetComponent<ARPlaneManager>();
+            placement.anchorManager = arManagersGo.GetComponent<ARAnchorManager>();
             placement.arCamera = arCameraGo.GetComponent<Camera>();
             placement.sceneRoot = sceneRoot;
             placement.reticle = reticleGo != null ? reticleGo.transform : null;
@@ -421,21 +429,55 @@ namespace TheTear.Editor
             }
         }
 
-        private static void TryAddComponent(GameObject go, string typeName)
+        private static bool TryAddComponent(GameObject go, string typeName)
         {
             if (go == null || string.IsNullOrEmpty(typeName))
             {
-                return;
+                return false;
             }
             Type type = Type.GetType(typeName);
             if (type == null)
             {
-                return;
+                return false;
             }
             if (go.GetComponent(type) == null)
             {
                 go.AddComponent(type);
             }
+            return true;
+        }
+
+        private static void EnsureComponent<T>(GameObject go) where T : Component
+        {
+            if (go == null)
+            {
+                return;
+            }
+
+            if (go.GetComponent<T>() == null)
+            {
+                go.AddComponent<T>();
+            }
+        }
+
+        private static void EnsureCameraPoseDriver(GameObject cameraGo)
+        {
+            if (cameraGo == null)
+            {
+                return;
+            }
+
+            if (TryAddComponent(cameraGo, "UnityEngine.XR.ARFoundation.ARPoseDriver, Unity.XR.ARFoundation"))
+            {
+                return;
+            }
+
+            if (TryAddComponent(cameraGo, "UnityEngine.SpatialTracking.TrackedPoseDriver, UnityEngine.SpatialTracking"))
+            {
+                return;
+            }
+
+            TryAddComponent(cameraGo, "UnityEngine.InputSystem.XR.TrackedPoseDriver, Unity.InputSystem");
         }
 
         private static GameObject CreatePlacementReticle()

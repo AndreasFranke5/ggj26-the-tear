@@ -34,6 +34,7 @@ namespace TheTear.Story
         private readonly Dictionary<GameObject, Coroutine> pulseRoutines = new Dictionary<GameObject, Coroutine>();
         private bool spawned;
         private bool deductionAvailable;
+        private bool visibilityOverride;
 
         public void Initialize(StoryModel model, SceneRootController root)
         {
@@ -49,6 +50,7 @@ namespace TheTear.Story
             objectToClue.Clear();
             objectInstances.Clear();
             pulseRoutines.Clear();
+            visibilityOverride = false;
 
             if (story != null && story.clues != null)
             {
@@ -100,8 +102,6 @@ namespace TheTear.Story
 
                 GameObject go = ClueFactory.Create(obj, sceneRoot.transform, prefabLibrary);
                 objectInstances[obj.id] = go;
-                bool visible = revealed.Contains(obj.id);
-                go.SetActive(visible);
 
                 if (objectToClue.TryGetValue(obj.id, out string clueId))
                 {
@@ -109,6 +109,8 @@ namespace TheTear.Story
                     interactable.Initialize(this, clueId);
                 }
             }
+
+            ApplyRevealState();
         }
 
         public bool IsUnlocked(string clueId)
@@ -165,8 +167,11 @@ namespace TheTear.Story
                     revealed.Add(revealId);
                     if (objectInstances.TryGetValue(revealId, out GameObject revealObj))
                     {
-                        revealObj.SetActive(true);
-                        PulseObject(revealObj);
+                        if (!visibilityOverride)
+                        {
+                            SetEvidenceVisible(revealObj, true);
+                            PulseObject(revealObj);
+                        }
                     }
                 }
             }
@@ -176,6 +181,26 @@ namespace TheTear.Story
             CheckClusterCompletion();
             PulseClueObject(clue.objectId);
             return true;
+        }
+
+        public void HideEvidenceForRelocate()
+        {
+            if (!spawned)
+            {
+                return;
+            }
+            visibilityOverride = true;
+            SetAllEvidenceVisible(false);
+        }
+
+        public void RestoreEvidenceVisibility()
+        {
+            if (!spawned)
+            {
+                return;
+            }
+            visibilityOverride = false;
+            ApplyRevealState();
         }
 
         public bool UnlockFirstEligibleFromJournal()
@@ -472,6 +497,55 @@ namespace TheTear.Story
             }
 
             return allRequired || (anyClusterComplete && essentialsMet);
+        }
+
+        private void ApplyRevealState()
+        {
+            if (story == null || story.objects == null)
+            {
+                return;
+            }
+
+            foreach (var obj in story.objects)
+            {
+                if (obj == null || string.IsNullOrEmpty(obj.id))
+                {
+                    continue;
+                }
+                if (objectInstances.TryGetValue(obj.id, out GameObject instance))
+                {
+                    bool visible = revealed.Contains(obj.id);
+                    SetEvidenceVisible(instance, visible);
+                }
+            }
+        }
+
+        private void SetAllEvidenceVisible(bool visible)
+        {
+            foreach (var kvp in objectInstances)
+            {
+                SetEvidenceVisible(kvp.Value, visible);
+            }
+        }
+
+        private void SetEvidenceVisible(GameObject target, bool visible)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+            var renderers = target.GetComponentsInChildren<Renderer>(true);
+            foreach (var renderer in renderers)
+            {
+                renderer.enabled = visible;
+            }
+
+            var colliders = target.GetComponentsInChildren<Collider>(true);
+            foreach (var collider in colliders)
+            {
+                collider.enabled = visible;
+            }
         }
     }
 }

@@ -168,7 +168,7 @@ namespace TheTear.Core
             }
         }
 
-        private void HandlePlaced()
+        private void HandlePlaced(Transform placedRoot)
         {
             state = AppState.Investigating;
 
@@ -213,6 +213,10 @@ namespace TheTear.Core
             {
                 arPlacement.BeginPlacement();
             }
+            if (clueManager != null)
+            {
+                clueManager.HideEvidenceForRelocate();
+            }
             if (tapRaycaster != null)
             {
                 tapRaycaster.enabled = false;
@@ -232,6 +236,10 @@ namespace TheTear.Core
             if (telemetry != null)
             {
                 telemetry.RecordEvent("relocate", "placed");
+            }
+            if (clueManager != null)
+            {
+                clueManager.RestoreEvidenceVisibility();
             }
             if (tapRaycaster != null)
             {
