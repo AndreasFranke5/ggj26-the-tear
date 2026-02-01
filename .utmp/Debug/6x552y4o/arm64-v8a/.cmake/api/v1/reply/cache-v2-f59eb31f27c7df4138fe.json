@@ -739,7 +739,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/GGJ26/TheTear/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp"
+			"value" : "C:/GGJ26/TheTear/Library/PramData/AndroidApplicationController/Cache/com.unity.template.ar_mobile/gradle-project/unityLibrary/src/main/cpp"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -775,7 +775,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "C:\\GGJ26\\TheTear\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\build\\intermediates\\cxx\\Debug\\6x552y4o\\obj\\arm64-v8a"
+			"value" : "C:\\GGJ26\\TheTear\\Library\\PramData\\AndroidApplicationController\\Cache\\com.unity.template.ar_mobile\\gradle-project\\unityLibrary\\build\\intermediates\\cxx\\Debug\\6x552y4o\\obj\\arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -1047,7 +1047,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "C:\\GGJ26\\TheTear\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\build\\intermediates\\cxx\\Debug\\6x552y4o\\obj\\arm64-v8a"
+			"value" : "C:\\GGJ26\\TheTear\\Library\\PramData\\AndroidApplicationController\\Cache\\com.unity.template.ar_mobile\\gradle-project\\unityLibrary\\build\\intermediates\\cxx\\Debug\\6x552y4o\\obj\\arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1343,7 +1343,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/GGJ26/TheTear/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp"
+			"value" : "C:/GGJ26/TheTear/Library/PramData/AndroidApplicationController/Cache/com.unity.template.ar_mobile/gradle-project/unityLibrary/src/main/cpp"
 		},
 		{
 			"name" : "game-activity_DIR",
@@ -1403,7 +1403,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/GGJ26/TheTear/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity"
+			"value" : "C:/GGJ26/TheTear/Library/PramData/AndroidApplicationController/Cache/com.unity.template.ar_mobile/gradle-project/unityLibrary/src/main/cpp/GameActivity"
 		}
 	],
 	"kind" : "cache",

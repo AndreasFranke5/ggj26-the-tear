@@ -1,7 +1,7 @@
 {
   "buildFiles": [
-    "C:\\GGJ26\\TheTear\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\src\\main\\cpp\\CMakeLists.txt",
-    "C:\\GGJ26\\TheTear\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\src\\main\\cpp\\GameActivity\\CMakeLists.txt"
+    "C:\\GGJ26\\TheTear\\Library\\PramData\\AndroidApplicationController\\Cache\\com.unity.template.ar_mobile\\gradle-project\\unityLibrary\\src\\main\\cpp\\CMakeLists.txt",
+    "C:\\GGJ26\\TheTear\\Library\\PramData\\AndroidApplicationController\\Cache\\com.unity.template.ar_mobile\\gradle-project\\unityLibrary\\src\\main\\cpp\\GameActivity\\CMakeLists.txt"
   ],
   "cleanCommandsComponents": [
     [
@@ -21,7 +21,7 @@
     "game::@d02bb112ea9f9c2ed29f": {
       "artifactName": "game",
       "abi": "arm64-v8a",
-      "output": "C:\\GGJ26\\TheTear\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\build\\intermediates\\cxx\\Debug\\6x552y4o\\obj\\arm64-v8a\\libgame.so",
+      "output": "C:\\GGJ26\\TheTear\\Library\\PramData\\AndroidApplicationController\\Cache\\com.unity.template.ar_mobile\\gradle-project\\unityLibrary\\build\\intermediates\\cxx\\Debug\\6x552y4o\\obj\\arm64-v8a\\libgame.so",
       "runtimeFiles": []
     }
   }

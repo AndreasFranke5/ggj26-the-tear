@@ -29,3 +29,5 @@ AI_PROMPT*.md
 AI_PROMPT*.txt
 *.prompt.md
 *.prompt.txt
+CLAUDE.md
+GAME_SPEC.md
