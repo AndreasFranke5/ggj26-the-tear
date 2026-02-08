@@ -70,6 +70,7 @@ namespace TheTear.Editor
             GameObject gmGo = new GameObject("GameManager");
             var gameManager = gmGo.AddComponent<GameManager>();
             var placement = gmGo.AddComponent<ARPlacementController>();
+            var boundaryPlacement = gmGo.AddComponent<ARBoundaryPlacementController>();
             var character = gmGo.AddComponent<TheTear.Characters.CharacterModeController>();
             var clueManager = gmGo.AddComponent<ClueManager>();
             var telemetry = gmGo.AddComponent<TelemetryRecorder>();
@@ -81,6 +82,12 @@ namespace TheTear.Editor
             if (reticleGo != null && xrOriginGo != null)
             {
                 reticleGo.transform.SetParent(xrOriginGo.transform, false);
+            }
+
+            GameObject boundaryMarkersGo = new GameObject("BoundaryMarkers");
+            if (xrOriginGo != null)
+            {
+                boundaryMarkersGo.transform.SetParent(xrOriginGo.transform, false);
             }
 
             // UI
@@ -253,6 +260,10 @@ namespace TheTear.Editor
             placement.sceneRoot = sceneRoot;
             placement.reticle = reticleGo != null ? reticleGo.transform : null;
 
+            boundaryPlacement.raycastManager = arManagersGo.GetComponent<ARRaycastManager>();
+            boundaryPlacement.arCamera = arCameraGo.GetComponent<Camera>();
+            boundaryPlacement.markerParent = boundaryMarkersGo.transform;
+
             character.arCamera = arCameraGo.GetComponent<Camera>();
             character.overlayController = overlayController;
             character.telemetry = telemetry;
@@ -261,6 +272,7 @@ namespace TheTear.Editor
             tapRaycaster.arCamera = arCameraGo.GetComponent<Camera>();
 
             gameManager.arPlacement = placement;
+            gameManager.boundaryPlacement = boundaryPlacement;
             gameManager.sceneRoot = sceneRoot;
             gameManager.characterController = character;
             gameManager.clueManager = clueManager;

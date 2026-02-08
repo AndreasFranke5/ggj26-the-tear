@@ -225,6 +225,42 @@ namespace TheTear.Story
             return story != null ? story.clues : Array.Empty<ClueData>();
         }
 
+        public void ApplyBoundaryPlacements(IReadOnlyList<Pose> boundaryPoses, float extraClueRadius)
+        {
+            if (boundaryPoses == null || boundaryPoses.Count == 0 || story == null || story.objects == null)
+            {
+                return;
+            }
+
+            int boundaryCount = boundaryPoses.Count;
+            Transform rootTransform = sceneRoot != null ? sceneRoot.transform : null;
+
+            for (int i = 0; i < story.objects.Length; i++)
+            {
+                StoryObjectData obj = story.objects[i];
+                if (obj == null || string.IsNullOrEmpty(obj.id))
+                {
+                    continue;
+                }
+
+                Pose placement = ResolveBoundaryPose(boundaryPoses, boundaryCount, i, extraClueRadius);
+
+                if (rootTransform != null)
+                {
+                    Vector3 localPos = rootTransform.InverseTransformPoint(placement.position);
+                    Quaternion localRot = Quaternion.Inverse(rootTransform.rotation) * placement.rotation;
+                    obj.localPosition = localPos;
+                    obj.localRotation = localRot.eulerAngles;
+                    obj.localYaw = localRot.eulerAngles.y;
+                }
+
+                if (spawned && objectInstances.TryGetValue(obj.id, out GameObject instance))
+                {
+                    instance.transform.SetPositionAndRotation(placement.position, placement.rotation);
+                }
+            }
+        }
+
         public IEnumerable<ClusterData> GetClusters()
         {
             return story != null ? story.clusters : Array.Empty<ClusterData>();
@@ -546,6 +582,28 @@ namespace TheTear.Story
             {
                 collider.enabled = visible;
             }
+        }
+
+        private Pose ResolveBoundaryPose(IReadOnlyList<Pose> boundaryPoses, int boundaryCount, int index, float extraClueRadius)
+        {
+            int boundaryIndex = index % boundaryCount;
+            int ringIndex = index / boundaryCount;
+
+            Pose basePose = boundaryPoses[boundaryIndex];
+            Vector3 position = basePose.position;
+            if (ringIndex > 0 && extraClueRadius > 0f)
+            {
+                position += ComputeOffset(index, ringIndex, extraClueRadius);
+            }
+
+            return new Pose(position, basePose.rotation);
+        }
+
+        private Vector3 ComputeOffset(int seed, int ringIndex, float extraClueRadius)
+        {
+            float angle = seed * 137.5f * Mathf.Deg2Rad;
+            float radius = extraClueRadius * ringIndex;
+            return new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
         }
     }
 }

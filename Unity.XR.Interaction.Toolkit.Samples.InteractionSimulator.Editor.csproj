@@ -49,10 +49,10 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.3.6f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Samples\XR Interaction Toolkit\3.3.1\XR Interaction Simulator\Editor\XRInteractionSimulatorProjectValidation.cs" />
+    <Compile Include="Assets\MaskedMurderer\Assets\Samples\XR Interaction Toolkit\3.3.1\XR Interaction Simulator\Editor\XRInteractionSimulatorProjectValidation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Samples\XR Interaction Toolkit\3.3.1\XR Interaction Simulator\Editor\InteractionSimulator.Editor.asmdef" />
+    <None Include="Assets\MaskedMurderer\Assets\Samples\XR Interaction Toolkit\3.3.1\XR Interaction Simulator\Editor\InteractionSimulator.Editor.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -643,8 +643,268 @@
       <HintPath>Library\PackageCache\com.unity.collections@aea9d3bd5e19\Unity.Collections.Tests\System.Runtime.CompilerServices.Unsafe\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreTextEngineModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.SharedInternalsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Burst">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.Burst.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.Interaction.Toolkit">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.Interaction.Toolkit.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.Management">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.Management.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.AudioModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreFontEngineModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.InputSystem.ForUI">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.InputSystem.ForUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.Mathematics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.ARFoundation.InternalUtils">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.ARFoundation.InternalUtils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.TilemapModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.MultiplayerModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.MultiplayerModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.SubsystemsModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.SubsystemsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputForUIModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.InputForUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Runtime">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.Interaction.Toolkit.Samples.InteractionSimulator">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.Interaction.Toolkit.Samples.InteractionSimulator.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.Physics2DModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime.Shared">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.RenderPipelines.Core.Runtime.Shared.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.VFXModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AdaptivePerformanceModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.AdaptivePerformanceModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AndroidJNIModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.AndroidJNIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\System.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.AIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.GridModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.InputSystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.UnifiedRayTracing.Runtime">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.UnifiedRayTracing.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.InputModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.ARCore">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.ARCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.SpriteShapeModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.XRModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.ARSubsystems">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.ARSubsystems.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.HierarchyCoreModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.HierarchyCoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.TerrainModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.SpatialTracking.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PropertiesModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.PropertiesModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Mono.Security.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.VRModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.ARFoundation">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.ARFoundation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.Interaction.Toolkit.Samples.StarterAssets">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.Interaction.Toolkit.Samples.StarterAssets.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.GPUDriven.Runtime">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.RenderPipelines.GPUDriven.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@4dfd81071c64\Runtime\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEngineBridge.004">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.InternalAPIEngineBridge.004.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.UIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.Interaction.Toolkit.Samples.ARStarterAssets">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.Interaction.Toolkit.Samples.ARStarterAssets.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConsentModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.UnityConsentModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsCommonModule">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Collections">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.Collections.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.XR.CoreUtils">
+      <HintPath>Assets\MaskedMurderer\TheTear\TheTearV1_BackUpThisFolder_ButDontShipItWithYourGame\Managed\Unity.XR.CoreUtils.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">
@@ -1163,12 +1423,12 @@
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEditor.TestRunner">
-      <HintPath>Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine.TestRunner">
       <HintPath>Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEditor.TestRunner">
+      <HintPath>Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

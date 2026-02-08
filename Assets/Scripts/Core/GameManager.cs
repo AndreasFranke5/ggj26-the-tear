@@ -13,6 +13,7 @@ namespace TheTear.Core
     public class GameManager : MonoBehaviour
     {
         public ARPlacementController arPlacement;
+        public ARBoundaryPlacementController boundaryPlacement;
         public SceneRootController sceneRoot;
         public CharacterModeController characterController;
         public ClueManager clueManager;
@@ -25,6 +26,8 @@ namespace TheTear.Core
         public ToastController toast;
         public ErrorPanelController errorPanel;
         public OverlayController overlay;
+        public bool applyBoundaryPlacement = true;
+        public bool updateBoundaryPlacementOnMarker = true;
 
         private AppState state = AppState.Placement;
         private StoryModel story;
@@ -40,6 +43,14 @@ namespace TheTear.Core
         private void Start()
         {
             StartCoroutine(LoadAndInit());
+        }
+
+        private void OnDestroy()
+        {
+            if (boundaryPlacement != null)
+            {
+                boundaryPlacement.OnMarkerPlaced -= HandleBoundaryMarkerPlaced;
+            }
         }
 
         private IEnumerator LoadAndInit()
@@ -122,6 +133,11 @@ namespace TheTear.Core
                 arPlacement.BeginPlacement();
             }
 
+            if (boundaryPlacement != null)
+            {
+                boundaryPlacement.OnMarkerPlaced += HandleBoundaryMarkerPlaced;
+            }
+
             if (tapRaycaster != null)
             {
                 tapRaycaster.enabled = false;
@@ -175,6 +191,7 @@ namespace TheTear.Core
             if (clueManager != null)
             {
                 clueManager.SpawnClues();
+                ApplyBoundaryPlacementIfReady();
             }
 
             if (!ValidateEvidence())
@@ -205,6 +222,36 @@ namespace TheTear.Core
                     toast.Show(story.introText, 5f);
                 }
             }
+        }
+
+        private void HandleBoundaryMarkerPlaced(Pose pose)
+        {
+            if (!updateBoundaryPlacementOnMarker)
+            {
+                return;
+            }
+
+            if (clueManager == null || !clueManager.HasSpawned)
+            {
+                return;
+            }
+
+            ApplyBoundaryPlacementIfReady();
+        }
+
+        private void ApplyBoundaryPlacementIfReady()
+        {
+            if (!applyBoundaryPlacement || boundaryPlacement == null || clueManager == null)
+            {
+                return;
+            }
+
+            if (boundaryPlacement.MarkerCount <= 0)
+            {
+                return;
+            }
+
+            clueManager.ApplyBoundaryPlacements(boundaryPlacement.MarkerPoses, boundaryPlacement.extraClueRadius);
         }
 
         private void BeginRelocate()
